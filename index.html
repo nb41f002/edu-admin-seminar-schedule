@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教育行政專題研討 18週授課時程與專題報告分配系統</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans TC', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    :focus-visible {
+      outline: 2px solid #4f46e5;
+      outline-offset: 2px;
+    }
+    .tab-btn {
+      transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .tab-btn:hover:not(.tab-btn-active) {
+      background-color: rgb(226 232 240 / 0.7);
+      color: #0f172a;
+    }
+    .tab-btn-active {
+      background-color: #4f46e5;
+      color: #fff;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+      font-weight: 600;
+    }
+    .action-btn:focus-visible {
+      outline: 2px solid #4f46e5;
+      outline-offset: 2px;
+    }
+    .status-badge-red {
+      background-color: #ffe4e6;
+      color: #9f1239;
+      border: 1px solid #fecdd3;
+      font-weight: 700;
+    }
+    .status-badge-green {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      font-weight: 700;
+    }
+    .status-badge-normal {
+      background-color: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      font-weight: 500;
+    }
+    .badge-holiday {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    .badge-exam {
+      background-color: #f3e8ff;
+      color: #6b21a8;
+      border: 1px solid #e9d5ff;
+    }
+    .badge-special {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    @media print {
+      @page {
+        margin: 1.2cm 1cm;
+      }
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+      }
+      header {
+        position: static !important;
+        box-shadow: none !important;
+      }
+      .tab-content {
+        display: block !important;
+      }
+      #tab-students, #tab-topics, #tab-analysis {
+        display: block !important;
+        page-break-before: always;
+      }
+      table {
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Fixed Navigation Bar -->
+  <header class="bg-white/95 backdrop-blur border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center text-white shadow-md shadow-indigo-100 font-extrabold text-sm tracking-tight">
+          專題
+        </div>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight truncate">教育行政專題研討 · 授課時程與議題分配</h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">製表：葉容辰</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">報告上限 30 分鐘 · 設計 2 題 QA · 即時協調診斷</p>
+        </div>
+      </div>
+
+      <div class="flex items-center flex-wrap gap-2">
+        <button type="button" onclick="exportToExcel()" class="action-btn inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          匯出 Excel
+        </button>
+        <button type="button" onclick="exportToWord()" class="action-btn inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          匯出 Word
+        </button>
+        <button type="button" onclick="window.print()" class="action-btn inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-slate-700 hover:bg-slate-800 text-white shadow-sm transition-colors">
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          列印 / PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 w-full flex-grow">
+
+    <!-- Rules & Legend -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+      <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">30分</div>
+        <div>
+          <div class="text-xs text-slate-500 font-medium">個人發表時長上限</div>
+          <div class="text-sm font-bold text-slate-800">最長不超過 30 分鐘</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-xs">QA</div>
+        <div>
+          <div class="text-xs text-slate-500 font-medium">現場問答互動</div>
+          <div class="text-sm font-bold text-slate-800">須設計 2 題進行 QA</div>
+        </div>
+      </div>
+      <div class="bg-amber-50 rounded-xl p-3.5 border border-amber-200 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-xs">W4</div>
+        <div>
+          <div class="text-xs text-amber-800 font-bold">10/2 (W4) 外師授課</div>
+          <div class="text-xs font-semibold text-amber-900">該週不排報告，碩一順延平衡</div>
+        </div>
+      </div>
+      <div class="bg-emerald-50 rounded-xl p-3.5 border border-emerald-200 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">OK</div>
+        <div>
+          <div class="text-xs text-emerald-800 font-bold">全學期負擔平衡</div>
+          <div class="text-xs font-semibold text-emerald-900">每週 2～3 人 · 0 週超額</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabbed Views -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+      <div class="border-b border-slate-200 px-3 sm:px-5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/90">
+        <nav class="flex items-center gap-1 overflow-x-auto pb-0.5 -mx-1 px-1" aria-label="檢視切換">
+          <button type="button" onclick="switchTab('tab-schedule')" id="btn-tab-schedule" class="tab-btn tab-btn-active shrink-0 px-3.5 py-1.5 text-xs sm:text-sm rounded-lg">
+            18週授課時程
+          </button>
+          <button type="button" onclick="switchTab('tab-students')" id="btn-tab-students" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
+            學生名冊 (17人)
+          </button>
+          <button type="button" onclick="switchTab('tab-topics')" id="btn-tab-topics" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
+            18 項議題分配
+          </button>
+          <button type="button" onclick="switchTab('tab-analysis')" id="btn-tab-analysis" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
+            統計分析
+          </button>
+        </nav>
+
+        <div class="relative w-full sm:w-64 no-print">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </span>
+          <input type="search" id="searchInput" onkeyup="filterContent()" placeholder="搜尋姓名、學號、週次或議題…" class="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+        </div>
+      </div>
+
+      <!-- TAB 1: Schedule -->
+      <div id="tab-schedule" class="block tab-content p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-slate-200 gap-2">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">18 週次授課進度與專題發表排程表</h2>
+            <p class="text-xs text-slate-500 mt-0.5">週次發表人數：超過 3 人顯示紅色；僅 1 人顯示綠色。議題：超過 2 人顯示紅色；僅 1 人顯示綠色。</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-red">超額需協調</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-green">1人充裕</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-normal">2～3人適中</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[720px]" id="scheduleTable">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
+                <th class="py-2.5 px-3 font-bold text-center w-20">週次</th>
+                <th class="py-2.5 px-3 font-bold w-28 text-center">日期</th>
+                <th class="py-2.5 px-3 font-bold w-48">授課主題 / 行事活動</th>
+                <th class="py-2.5 px-3 font-bold w-24 text-center">階段</th>
+                <th class="py-2.5 px-4 font-bold">專題報告發表學生與題目</th>
+                <th class="py-2.5 px-3 font-bold text-center w-32">發表人數標示</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleTableBody" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: Students -->
+      <div id="tab-students" class="hidden tab-content p-4 sm:p-6">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">全班研究生專題選填與排程總名冊 (17人)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">排序方式：二年級碩士班 → 三年級碩士班 → 二年級碩專班 → 一年級碩士班</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[800px]" id="studentsTable">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
+                <th class="py-2.5 px-2 text-center font-bold w-12">序號</th>
+                <th class="py-2.5 px-3 font-bold w-28 cursor-pointer hover:text-indigo-600 select-none" onclick="sortStudents('id')">學號 ↕</th>
+                <th class="py-2.5 px-3 font-bold w-24 cursor-pointer hover:text-indigo-600 select-none" onclick="sortStudents('name')">姓名 ↕</th>
+                <th class="py-2.5 px-3 font-bold w-28 text-center">班別 / 年級</th>
+                <th class="py-2.5 px-4 font-bold">期中專題報告（週次 / 研討議題）</th>
+                <th class="py-2.5 px-4 font-bold">期末專題報告（週次 / 研討議題）</th>
+                <th class="py-2.5 px-3 font-bold text-center w-24">協調狀態</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: Topics -->
+      <div id="tab-topics" class="hidden tab-content p-4 sm:p-6">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">18 項核心研討議題選填分配表</h2>
+            <p class="text-xs text-slate-500 mt-0.5">紅字標示：超過 2 人選填（需請同學調整）；綠字標示：僅 1 人選填（尚有充裕名額）</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[700px]" id="topicsTable">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
+                <th class="py-2.5 px-3 font-bold text-center w-14">編號</th>
+                <th class="py-2.5 px-4 font-bold w-1/3">議題名稱</th>
+                <th class="py-2.5 px-4 font-bold">期中發表同學</th>
+                <th class="py-2.5 px-4 font-bold">期末發表同學</th>
+                <th class="py-2.5 px-3 font-bold text-center w-36">總人次 / 狀態</th>
+              </tr>
+            </thead>
+            <tbody id="topicsTableBody" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 4: Analytics -->
+      <div id="tab-analysis" class="hidden tab-content p-4 sm:p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-2">
+          <div class="bg-slate-50/80 rounded-xl border border-slate-200 p-4">
+            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
+              <span class="w-2 h-2 rounded-full bg-indigo-600 mr-2"></span>
+              各週次發表人數負擔分析（&gt;3 人為紅；1 人為綠）
+            </h3>
+            <div id="weeklyLoadChart" class="space-y-2 text-xs"></div>
+          </div>
+          <div class="bg-slate-50/80 rounded-xl border border-slate-200 p-4">
+            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
+              <span class="w-2 h-2 rounded-full bg-rose-600 mr-2"></span>
+              熱門議題集中度統計（&gt;2 人為紅；1 人為綠）
+            </h3>
+            <div id="topicPopularityChart" class="space-y-2 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden print:block mt-8 pt-4 border-t-2 border-slate-400 text-sm">
+      <div class="flex justify-between items-center text-slate-700 gap-4">
+        <div>報告規範：每人限 30 分鐘，設計 2 題研討問題進行現場問答 · 製表：葉容辰</div>
+        <div>指導教授簽核：____________________</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="no-print border-t border-slate-200 bg-white py-3 text-center text-xs text-slate-500">
+    教育行政專題研討 · 製表：葉容辰 · 純前端單頁應用（無需後端）
+  </footer>
+
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" role="status" aria-live="polite">
+    <div class="bg-slate-900 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2">
+      <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      <span id="toastMsg">操作成功</span>
+    </div>
+  </div>
+
+  <script>
+    // 18 Core Topics Definition
+    const TOPICS = [
+      { id: 1, title: "教育行政計畫", full: "一、教育行政計畫" },
+      { id: 2, title: "教育行政決定", full: "二、教育行政決定" },
+      { id: 3, title: "教育行政組織", full: "三、教育行政組織" },
+      { id: 4, title: "組織文化與氣氛", full: "四、組織文化與氣氛" },
+      { id: 5, title: "工作倦怠與工作滿意", full: "五、工作倦怠與工作滿意" },
+      { id: 6, title: "權力與政治行為", full: "六、權力與政治行為" },
+      { id: 7, title: "教育組織衝突管理", full: "七、教育組織衝突管理" },
+      { id: 8, title: "教育行政的核心理念", full: "八、教育行政的核心理念" },
+      { id: 9, title: "現代化的教育行政行為", full: "九、現代化的教育行政行為" },
+      { id: 10, title: "教育行政發展的趨勢", full: "十、教育行政發展的趨勢" },
+      { id: 11, title: "學校教育與行政革新的理論基礎與趨勢", full: "十一、學校教育與行政革新的理論基礎與趨勢" },
+      { id: 12, title: "學校行政領導", full: "十二、學校行政領導" },
+      { id: 13, title: "學校本位管理與學校教育革新", full: "十三、學校本位管理與學校教育革新" },
+      { id: 14, title: "教育人事", full: "十四、教育人事" },
+      { id: 15, title: "教育經費", full: "十五、教育經費" },
+      { id: 16, title: "教育法令", full: "十六、教育法令" },
+      { id: 17, title: "教育公共關係", full: "十七、教育公共關係" },
+      { id: 18, title: "各國學校教育與行政革新的趨勢", full: "十八、各國學校教育與行政革新的趨勢" }
+    ];
+
+    // Master Course Syllabus (18 Weeks matching user calendar images + Week 4 Guest Lecture)
+    const SYLLABUS = [
+      { week: 1, date: "115/9/11", theme: "兒童福利的意義與範圍", type: "lecture", phase: "期中" },
+      { week: 2, date: "115/9/18", theme: "兒童權利與各國兒童福利的發展", type: "presentation", phase: "期中" },
+      { week: 3, date: "115/9/25", theme: "中秋節放假", type: "holiday", phase: "期中" },
+      { week: 4, date: "115/10/2", theme: "兒童福利政策與法規（外師專題授課）", type: "guest", phase: "期中" },
+      { week: 5, date: "115/10/9", theme: "國慶日補假", type: "holiday", phase: "期中" },
+      { week: 6, date: "115/10/16", theme: "兒童福利專業制度", type: "presentation", phase: "期中" },
+      { week: 7, date: "115/10/23", theme: "兒童虐待及保護性服務", type: "presentation", phase: "期中" },
+      { week: 8, date: "115/10/30", theme: "期中考(繳交期中報告)", type: "exam", phase: "期中" },
+      { week: 9, date: "115/11/6", theme: "支持性兒童福利服務", type: "presentation", phase: "期中" },
+      { week: 10, date: "115/11/13", theme: "補充性兒童福利服務", type: "presentation", phase: "期中/期末" },
+      { week: 11, date: "115/11/20", theme: "替代性兒童福利服務", type: "presentation", phase: "期末" },
+      { week: 12, date: "115/11/27", theme: "特殊需求兒童福利服務", type: "presentation", phase: "期末" },
+      { week: 13, date: "115/12/4", theme: "個別差異-特殊兒童", type: "presentation", phase: "期末" },
+      { week: 14, date: "115/12/11", theme: "原住民兒童福利服務", type: "presentation", phase: "期末" },
+      { week: 15, date: "115/12/18", theme: "兒童福利的展望與願景", type: "presentation", phase: "期末" },
+      { week: 16, date: "115/12/25", theme: "行憲紀念日放假", type: "holiday", phase: "期末" },
+      { week: 17, date: "116/01/01", theme: "元旦放假", type: "holiday", phase: "期末" },
+      { week: 18, date: "116/01/8", theme: "期末考(紙筆測驗)", type: "exam", phase: "期末" }
+    ];
+
+    // Master 17 Students Data Structure
+    // Opening Trio (Yeh Jungchen, Chen Tsute, Yang Pifang) start both Midterm (W2) and Final (W11)!
+    // Rebalanced for Week 4 Guest Lecture:
+    // - Week 4 has NO presentation (Guest lecture)
+    // - Week 9 (11/6): Li Jiayan & Luo Shenghan (2 presenters, relaxed)
+    // - Week 10 (11/13): First-year trio moves together! (Zhou Lanying, Yao Guanchen, Yang Huishan, 3 presenters)
+    // - Week 11 (11/20): Final officially launches (Yeh Jungchen, Chen Tsute, Yang Pifang together, 3 presenters)
+    // - Week 12 (11/27): Zhou Lanying & Yang Huishan (2 presenters)
+    // Result: 0 weeks > 3 presenters, perfect balance!
+    const STUDENTS = [
+      // 1. 二年級碩士班 (MB41)
+      { id: "MB41F102", name: "楊碧芳", midWeek: 2, midDate: "9/18", midTopicId: 3, finalWeek: 11, finalDate: "11/20", finalTopicId: 11 },
+      { id: "MB41F103", name: "李佳晏", midWeek: 9, midDate: "11/6", midTopicId: 2, finalWeek: 18, finalDate: "1/8", finalTopicId: 14 },
+      { id: "MB41F105", name: "龔勇華", midWeek: 7, midDate: "10/23", midTopicId: 7, finalWeek: 18, finalDate: "1/8", finalTopicId: 15 },
+      { id: "MB41F203", name: "陳奕伶", midWeek: 6, midDate: "10/16", midTopicId: 4, finalWeek: 14, finalDate: "12/11", finalTopicId: 17 },
+      { id: "MB41F204", name: "陳祖德", midWeek: 2, midDate: "9/18", midTopicId: 13, finalWeek: 11, finalDate: "11/20", finalTopicId: 12 },
+      { id: "MB41F205", name: "羅聖翰", midWeek: 9, midDate: "11/6", midTopicId: 15, finalWeek: 18, finalDate: "1/8", finalTopicId: 17 },
+      { id: "MB41F206", name: "宋慈恩", midWeek: 7, midDate: "10/23", midTopicId: 8, finalWeek: 14, finalDate: "12/11", finalTopicId: 18 },
+      { id: "MB41F207", name: "郭品辰", midWeek: 6, midDate: "10/16", midTopicId: 11, finalWeek: 15, finalDate: "12/18", finalTopicId: 8 },
+      { id: "MB41F209", name: "陳文明", midWeek: 7, midDate: "10/23", midTopicId: 6, finalWeek: 15, finalDate: "12/18", finalTopicId: 14 },
+
+      // 2. 三年級碩士班 (MB31)
+      { id: "MB31F213", name: "裴芳蓮", midWeek: 8, midDate: "10/30", midTopicId: 7, finalWeek: 14, finalDate: "12/11", finalTopicId: 10 },
+
+      // 3. 二年級碩專班 (NB41)
+      { id: "NB41F002", name: "葉容辰", midWeek: 2, midDate: "9/18", midTopicId: 1, finalWeek: 11, finalDate: "11/20", finalTopicId: 16 },
+      { id: "NB41F008", name: "邱曉葳", midWeek: 8, midDate: "10/30", midTopicId: 2, finalWeek: 15, finalDate: "12/18", finalTopicId: 13 },
+
+      // 4. 一年級碩士班 (MB51)
+      { id: "MB51F105", name: "周蘭英", midWeek: 10, midDate: "11/13", midTopicId: 10, finalWeek: 12, finalDate: "11/27", finalTopicId: 5 },
+      { id: "MB51F108", name: "姚冠辰", midWeek: 10, midDate: "11/13", midTopicId: 4, finalWeek: 13, finalDate: "12/4", finalTopicId: 5 },
+      { id: "MB51F203", name: "鄭奕清", midWeek: 8, midDate: "10/30", midTopicId: 9, finalWeek: 13, finalDate: "12/4", finalTopicId: 1 },
+      { id: "MB51F204", name: "楊慧珊", midWeek: 10, midDate: "11/13", midTopicId: 3, finalWeek: 12, finalDate: "11/27", finalTopicId: 6 },
+      { id: "MB51F206", name: "陳蕙燕", midWeek: 6, midDate: "10/16", midTopicId: 9, finalWeek: 13, finalDate: "12/4", finalTopicId: 12 }
+    ];
+
+    function getCohortInfo(id) {
+      const upper = id.toUpperCase();
+      if (upper.startsWith('MB41')) return { label: '二年級碩士班', badge: 'bg-sky-50 text-sky-700 border-sky-200' };
+      if (upper.startsWith('MB31')) return { label: '三年級碩士班', badge: 'bg-purple-50 text-purple-700 border-purple-200' };
+      if (upper.startsWith('NB41')) return { label: '二年級碩專班', badge: 'bg-amber-50 text-amber-800 border-amber-200' };
+      if (upper.startsWith('MB51')) return { label: '一年級碩士班', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+      return { label: '碩士班', badge: 'bg-slate-50 text-slate-700 border-slate-200' };
+    }
+
+    function getTopic(id) {
+      return TOPICS.find(t => t.id === id) || { id: 0, title: "未指定", full: "未指定" };
+    }
+
+    function getTopicCount(id) {
+      return STUDENTS.filter(s => s.midTopicId === id).length + STUDENTS.filter(s => s.finalTopicId === id).length;
+    }
+
+    function getWeekCount(weekNum) {
+      return STUDENTS.filter(s => s.midWeek === weekNum || s.finalWeek === weekNum).length;
+    }
+
+    // Topic Color Logic: >2 is Red, ==1 is Green, else Normal
+    function getTopicBadgeClass(topicId) {
+      const count = getTopicCount(topicId);
+      if (count > 2) return "status-badge-red";
+      if (count === 1) return "status-badge-green";
+      return "status-badge-normal";
+    }
+
+    function getTopicPrefix(topicId) {
+      const count = getTopicCount(topicId);
+      if (count > 2) return "⚠ ";
+      if (count === 1) return "✓ ";
+      return "";
+    }
+
+    // Week/Date Color Logic: >3 is Red, ==1 is Green, else Normal
+    function getWeekBadgeClass(weekNum) {
+      const count = getWeekCount(weekNum);
+      if (count > 3) return "status-badge-red";
+      if (count === 1) return "status-badge-green";
+      return "status-badge-normal";
+    }
+
+    function getPresentersForWeek(weekNum) {
+      const midPresenters = STUDENTS.filter(st => st.midWeek === weekNum).map(st => ({ ...st, reportType: '期中' }));
+      const finalPresenters = STUDENTS.filter(st => st.finalWeek === weekNum).map(st => ({ ...st, reportType: '期末' }));
+      return [...midPresenters, ...finalPresenters];
+    }
+
+    function formatExportDate() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function cellStatusClass(count, kind) {
+      // kind: 'week' (>3 red, 1 green) or 'topic' (>2 red, 1 green)
+      if (kind === 'week') {
+        if (count > 3) return 'red-alert';
+        if (count === 1) return 'green-ok';
+      } else {
+        if (count > 2) return 'red-alert';
+        if (count === 1) return 'green-ok';
+      }
+      return '';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderScheduleTable();
+      renderStudentsTable(STUDENTS);
+      renderTopicsTable();
+      renderAnalytics();
+    });
+
+    function renderScheduleTable() {
+      const tbody = document.getElementById('scheduleTableBody');
+      tbody.innerHTML = '';
+
+      SYLLABUS.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+
+        const allPresenters = getPresentersForWeek(s.week);
+        const count = allPresenters.length;
+
+        let typeBadge = '';
+        if (s.type === 'holiday') {
+          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-holiday">國定放假</span>';
+        } else if (s.type === 'guest') {
+          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-special">外師專題授課</span>';
+        } else if (s.type === 'exam') {
+          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-exam">考試 / 繳交</span>';
+        } else if (s.phase === '期中/期末') {
+          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-purple-50 text-purple-700 border border-purple-200">期中交接週</span>';
+        } else {
+          typeBadge = s.phase === '期中'
+            ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-sky-50 text-sky-700 border border-sky-200">期中階段</span>'
+            : '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">期末階段</span>';
+        }
+
+        let presentersHtml = '';
+        if (s.type === 'holiday') {
+          presentersHtml = `<span class="text-rose-600 font-medium italic">停課放假，無排定報告</span>`;
+        } else if (s.type === 'guest') {
+          presentersHtml = `<span class="text-amber-800 font-semibold">【外師專題講座】全班專心聽講研討，無學生專題發表</span>`;
+        } else if (count === 0) {
+          if (s.type === 'exam') {
+            presentersHtml = `<span class="text-purple-700 font-semibold">【考試 / 書面報告繳交】</span>`;
+          } else {
+            presentersHtml = `<span class="text-slate-400">教師授課 / 研討週次</span>`;
+          }
+        } else {
+          presentersHtml = `
+            <div class="flex flex-wrap gap-2 py-1">
+              ${allPresenters.map(p => {
+                const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
+                const topicObj = getTopic(topicId);
+                const badgeClass = getTopicBadgeClass(topicId);
+                const prefix = getTopicPrefix(topicId);
+                const phaseTag = p.reportType === '期中'
+                  ? '<span class="text-[10px] px-1 py-0.5 rounded bg-sky-100 text-sky-800 font-bold mr-1">期中</span>'
+                  : '<span class="text-[10px] px-1 py-0.5 rounded bg-amber-100 text-amber-800 font-bold mr-1">期末</span>';
+
+                return `
+                  <div class="inline-flex items-center px-2.5 py-1 rounded-lg border border-slate-200 bg-white shadow-sm">
+                    ${phaseTag}
+                    <span class="font-bold text-slate-900 mr-2">${p.name}</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs ${badgeClass}">
+                      ${prefix}${topicObj.full}
+                    </span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+
+        let weekBadgeHtml = '';
+        if (s.type === 'holiday' || s.type === 'guest') {
+          weekBadgeHtml = '<span class="text-slate-400 text-xs">—</span>';
+        } else if (count > 3) {
+          weekBadgeHtml = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs status-badge-red">超額 (${count}人)</span>`;
+        } else if (count === 1) {
+          weekBadgeHtml = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs status-badge-green">充裕 (1人)</span>`;
+        } else if (count > 1) {
+          weekBadgeHtml = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs status-badge-normal">${count}人 (適中)</span>`;
+        } else {
+          weekBadgeHtml = '<span class="text-slate-400 text-xs">0人</span>';
+        }
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-800 font-mono">第 ${s.week} 週</td>
+          <td class="py-3 px-3 text-center font-mono font-medium ${count > 3 ? 'text-rose-700 font-bold' : (count === 1 ? 'text-emerald-700 font-bold' : 'text-slate-600')}">${s.date}</td>
+          <td class="py-3 px-3 font-semibold text-slate-800">${s.theme}</td>
+          <td class="py-3 px-3 text-center">${typeBadge}</td>
+          <td class="py-3 px-4">${presentersHtml}</td>
+          <td class="py-3 px-3 text-center">${weekBadgeHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderStudentsTable(list) {
+      const tbody = document.getElementById('studentsTableBody');
+      tbody.innerHTML = '';
+
+      list.forEach((s, idx) => {
+        const midT = getTopic(s.midTopicId);
+        const finalT = getTopic(s.finalTopicId);
+
+        const midTBadge = getTopicBadgeClass(s.midTopicId);
+        const finalTBadge = getTopicBadgeClass(s.finalTopicId);
+
+        const midWeekCount = s.midWeek ? getWeekCount(s.midWeek) : 0;
+        const finalWeekCount = s.finalWeek ? getWeekCount(s.finalWeek) : 0;
+
+        const midWeekBadge = s.midWeek
+          ? (midWeekCount > 3 ? 'status-badge-red' : (midWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
+          : 'bg-rose-100 text-rose-800 font-bold';
+
+        const finalWeekBadge = s.finalWeek
+          ? (finalWeekCount > 3 ? 'status-badge-red' : (finalWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
+          : 'bg-rose-100 text-rose-800 font-bold';
+
+        const cohort = getCohortInfo(s.id);
+
+        const isTopicConflict = getTopicCount(s.midTopicId) > 2 || getTopicCount(s.finalTopicId) > 2;
+        const isWeekConflict = midWeekCount > 3 || finalWeekCount > 3;
+        const isMissing = s.midWeek === null || s.finalWeek === null;
+
+        let statusHtml = '';
+        if (isMissing) {
+          statusHtml = '<span class="px-2 py-0.5 rounded text-xs bg-rose-600 text-white font-bold">未回報</span>';
+        } else if (isWeekConflict || isTopicConflict) {
+          statusHtml = '<span class="px-2 py-0.5 rounded text-xs status-badge-red">需協調</span>';
+        } else {
+          statusHtml = '<span class="px-2 py-0.5 rounded text-xs status-badge-green">已確認</span>';
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+        tr.innerHTML = `
+          <td class="py-3 px-2 text-center text-slate-400 text-xs font-mono">${idx + 1}</td>
+          <td class="py-3 px-3 font-mono font-bold text-indigo-700">${s.id}</td>
+          <td class="py-3 px-3 font-bold text-slate-900">${s.name}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold border ${cohort.badge}">
+              ${cohort.label}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex items-center flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded font-mono text-xs ${midWeekBadge}">
+                ${s.midWeek ? `第 ${s.midWeek} 週 (${s.midDate})` : '未填週次'}
+              </span>
+              <span class="px-2 py-0.5 rounded text-xs ${midTBadge}">
+                ${getTopicPrefix(s.midTopicId)}${midT.full}
+              </span>
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex items-center flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded font-mono text-xs ${finalWeekBadge}">
+                ${s.finalWeek ? `第 ${s.finalWeek} 週 (${s.finalDate})` : '未填週次'}
+              </span>
+              <span class="px-2 py-0.5 rounded text-xs ${finalTBadge}">
+                ${getTopicPrefix(s.finalTopicId)}${finalT.full}
+              </span>
+            </div>
+          </td>
+          <td class="py-3 px-3 text-center">${statusHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    let sortAscMap = { id: true, name: true };
+    function sortStudents(col) {
+      sortAscMap[col] = !sortAscMap[col];
+      const sorted = [...STUDENTS].sort((a, b) => {
+        let valA = a[col];
+        let valB = b[col];
+        return sortAscMap[col] ? valA.localeCompare(valB, 'zh-TW') : valB.localeCompare(valA, 'zh-TW');
+      });
+      renderStudentsTable(sorted);
+      showToast(`已按 ${col === 'id' ? '學號' : '姓名'} 排序`);
+    }
+
+    function renderTopicsTable() {
+      const tbody = document.getElementById('topicsTableBody');
+      tbody.innerHTML = '';
+
+      TOPICS.forEach(topic => {
+        const midList = STUDENTS.filter(s => s.midTopicId === topic.id);
+        const finalList = STUDENTS.filter(s => s.finalTopicId === topic.id);
+        const total = midList.length + finalList.length;
+
+        let statusText = '';
+        if (total > 2) {
+          statusText = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs status-badge-red">超過兩人 (${total}人)</span>`;
+        } else if (total === 1) {
+          statusText = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs status-badge-green">僅一人 (充裕)</span>`;
+        } else if (total === 2) {
+          statusText = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs status-badge-normal">2人 (適中)</span>`;
+        } else {
+          statusText = `<span class="text-slate-400 text-xs">0人</span>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+
+        const midBadges = midList.length > 0
+          ? midList.map(s => `
+              <span class="inline-flex items-center px-2.5 py-1 rounded text-xs bg-sky-50 text-sky-800 border border-sky-200 mr-1.5 mb-1 font-semibold">
+                ${s.name} <span class="ml-1 font-mono text-[11px] text-sky-600 font-bold">(W${s.midWeek} ${s.midDate})</span>
+              </span>
+            `).join('')
+          : '<span class="text-slate-400 text-xs">無</span>';
+
+        const finalBadges = finalList.length > 0
+          ? finalList.map(s => `
+              <span class="inline-flex items-center px-2.5 py-1 rounded text-xs bg-amber-50 text-amber-900 border border-amber-200 mr-1.5 mb-1 font-semibold">
+                ${s.name} <span class="ml-1 font-mono text-[11px] text-amber-700 font-bold">(W${s.finalWeek} ${s.finalDate})</span>
+              </span>
+            `).join('')
+          : '<span class="text-slate-400 text-xs">無</span>';
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center font-bold text-slate-600 font-mono">${topic.id}</td>
+          <td class="py-3 px-4 font-semibold text-slate-800 ${total > 2 ? 'text-rose-700 font-bold' : (total === 1 ? 'text-emerald-700 font-bold' : '')}">${topic.full}</td>
+          <td class="py-3 px-4 bg-sky-50/20">${midBadges}</td>
+          <td class="py-3 px-4 bg-amber-50/20">${finalBadges}</td>
+          <td class="py-3 px-3 text-center">${statusText}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAnalytics() {
+      const loadContainer = document.getElementById('weeklyLoadChart');
+      loadContainer.innerHTML = '';
+
+      SYLLABUS.forEach(s => {
+        if (s.type === 'holiday') return;
+        const total = getWeekCount(s.week);
+        const maxLoad = 5;
+        const pct = Math.min(100, (total / maxLoad) * 100);
+
+        let barColor = 'bg-slate-400';
+        let textColor = 'text-slate-700';
+        if (total > 3) {
+          barColor = 'bg-rose-500';
+          textColor = 'text-rose-700 font-bold';
+        } else if (total === 1) {
+          barColor = 'bg-emerald-500';
+          textColor = 'text-emerald-700 font-bold';
+        }
+
+        const row = document.createElement('div');
+        row.className = "flex items-center gap-2";
+        row.innerHTML = `
+          <div class="w-28 font-mono text-slate-600 truncate">第${s.week}週 (${s.date})</div>
+          <div class="flex-grow bg-slate-100 rounded-full h-3 overflow-hidden flex border border-slate-200">
+            <div class="${barColor} h-full transition-all" style="width: ${pct}%"></div>
+          </div>
+          <div class="w-24 text-right font-mono text-xs ${textColor}">${total > 3 ? `${total} 人` : (total === 1 ? `1 人` : `${total} 人`)}</div>
+        `;
+        loadContainer.appendChild(row);
+      });
+
+      const popContainer = document.getElementById('topicPopularityChart');
+      popContainer.innerHTML = '';
+
+      const topicCounts = TOPICS.map(t => {
+        const count = getTopicCount(t.id);
+        return { ...t, total: count };
+      }).sort((a, b) => b.total - a.total).slice(0, 7);
+
+      topicCounts.forEach(t => {
+        let barColor = 'bg-slate-400';
+        let textColor = 'text-slate-700';
+        if (t.total > 2) {
+          barColor = 'bg-rose-500';
+          textColor = 'text-rose-700 font-bold';
+        } else if (t.total === 1) {
+          barColor = 'bg-emerald-500';
+          textColor = 'text-emerald-700 font-bold';
+        }
+
+        const row = document.createElement('div');
+        row.className = "flex items-center gap-2";
+        row.innerHTML = `
+          <div class="w-36 font-medium text-slate-700 truncate" title="${t.full}">${t.full}</div>
+          <div class="flex-grow bg-slate-100 rounded-full h-3 overflow-hidden flex border border-slate-200">
+            <div class="${barColor} h-full transition-all" style="width: ${(t.total / 4) * 100}%"></div>
+          </div>
+          <div class="w-20 text-right font-mono text-xs ${textColor}">${t.total > 2 ? `${t.total} 人` : (t.total === 1 ? `1 人` : `${t.total} 人`)}</div>
+        `;
+        popContainer.appendChild(row);
+      });
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const tabs = ['btn-tab-schedule', 'btn-tab-students', 'btn-tab-topics', 'btn-tab-analysis'];
+      tabs.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.className = "tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600";
+        }
+      });
+
+      document.getElementById(tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById(`btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = "tab-btn tab-btn-active shrink-0 px-3.5 py-1.5 text-xs sm:text-sm rounded-lg";
+      }
+    }
+
+    function filterContent() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      document.querySelectorAll('#scheduleTableBody tr').forEach(tr => {
+        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+
+      document.querySelectorAll('#studentsTableBody tr').forEach(tr => {
+        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+
+      document.querySelectorAll('#topicsTableBody tr').forEach(tr => {
+        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function buildScheduleExportRows() {
+      return SYLLABUS.map(s => {
+        const presenters = getPresentersForWeek(s.week);
+        const count = presenters.length;
+        let pText = '';
+        if (s.type === 'holiday') {
+          pText = '<span style="color:#b91c1c;">國定放假，無排定報告</span>';
+        } else if (s.type === 'guest') {
+          pText = '<span style="color:#92400e;font-weight:bold;">【外師專題講座】無學生專題發表</span>';
+        } else if (count === 0) {
+          pText = s.type === 'exam'
+            ? '<span style="color:#7e22ce;">考試 / 書面報告繳交</span>'
+            : '<span style="color:#94a3b8;">教師授課</span>';
+        } else {
+          pText = presenters.map(p => {
+            const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
+            return `<b>${p.name}</b>（${p.reportType}）${getTopic(topicId).full}`;
+          }).join('<br>');
+        }
+        const countLabel = (s.type === 'holiday' || s.type === 'guest') ? '—' : `${count}人`;
+        const countClass = (s.type === 'holiday' || s.type === 'guest') ? '' : cellStatusClass(count, 'week');
+        return { s, pText, countLabel, countClass, count };
+      });
+    }
+
+    function buildTopicSummaryRows() {
+      return TOPICS.map(topic => {
+        const midList = STUDENTS.filter(s => s.midTopicId === topic.id);
+        const finalList = STUDENTS.filter(s => s.finalTopicId === topic.id);
+        const total = midList.length + finalList.length;
+        let status = '適中';
+        if (total > 2) status = '超額需協調';
+        else if (total === 1) status = '充裕';
+        else if (total === 0) status = '無人選填';
+        else if (total === 2) status = '適中';
+        return {
+          topic,
+          midNames: midList.map(s => `${s.name}(W${s.midWeek})`).join('、') || '—',
+          finalNames: finalList.map(s => `${s.name}(W${s.finalWeek})`).join('、') || '—',
+          total,
+          status,
+          statusClass: cellStatusClass(total, 'topic')
+        };
+      });
+    }
+
+    function exportToExcel() {
+      const dateStr = formatExportDate();
+      const scheduleRows = buildScheduleExportRows();
+      const topicRows = buildTopicSummaryRows();
+
+      let excelHtml = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+          <!--[if gte mso 9]><xml>
+            <x:ExcelWorkbook>
+              <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                  <x:Name>專題分配表</x:Name>
+                  <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                </x:ExcelWorksheet>
+              </x:ExcelWorksheets>
+            </x:ExcelWorkbook>
+          </xml><![endif]-->
+          <style>
+            body { font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif; font-size: 11pt; color: #0f172a; }
+            table { border-collapse: collapse; margin-bottom: 28px; width: 100%; }
+            th { background-color: #312e81; color: #ffffff; border: 1px solid #4338ca; padding: 7px 8px; font-weight: bold; text-align: center; }
+            td { border: 1px solid #94a3b8; padding: 6px 8px; vertical-align: top; }
+            .header-title { font-size: 18pt; font-weight: bold; text-align: center; margin: 12px 0 4px 0; color: #1e3a8a; }
+            .header-sub { font-size: 10pt; text-align: center; color: #475569; margin-bottom: 4px; }
+            .meta { font-size: 9.5pt; text-align: center; color: #64748b; margin-bottom: 16px; }
+            .section-title { background-color: #4338ca !important; color: #ffffff !important; text-align: left !important; font-size: 12pt; }
+            .rules { border: 1.5px solid #4338ca; background: #f8fafc; padding: 10px 12px; margin-bottom: 18px; font-size: 10pt; }
+            .red-alert { background-color: #ffe4e6; color: #9f1239; font-weight: bold; }
+            .green-ok { background-color: #dcfce7; color: #166534; font-weight: bold; }
+            .center { text-align: center; }
+          </style>
+        </head>
+        <body>
+          <div class="header-title">教育行政專題研討 · 18週授課時程與專題報告分配表</div>
+          <div class="header-sub">每人發表上限 30 分鐘 · 設計 2 題 QA · 議題超過 2 人／週次超過 3 人須協調</div>
+          <div class="meta">製表：葉容辰 · 匯出日期：${dateStr}</div>
+
+          <div class="rules">
+            <b>【專題發表與研討規範】</b><br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
+            2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
+            3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
+            4. 第 4 週（10/2）外師專題授課，該週不排學生報告。
+          </div>
+
+          <table>
+            <thead>
+              <tr><th class="section-title" colspan="5">【一、18 週次授課進度與專題發表時程表】</th></tr>
+              <tr>
+                <th style="width:70px;">週次</th>
+                <th style="width:90px;">日期</th>
+                <th style="width:220px;">授課主題 / 行事活動</th>
+                <th>專題發表名冊與題目</th>
+                <th style="width:70px;">人數</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${scheduleRows.map(({ s, pText, countLabel, countClass }) => `
+                <tr>
+                  <td class="center">第 ${s.week} 週</td>
+                  <td class="center">${s.date}</td>
+                  <td>${s.theme}</td>
+                  <td>${pText}</td>
+                  <td class="center ${countClass}">${countLabel}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr><th class="section-title" colspan="6">【二、全班 17 位研究生個人選填名冊】</th></tr>
+              <tr>
+                <th style="width:45px;">序號</th>
+                <th style="width:100px;">學號</th>
+                <th style="width:85px;">姓名</th>
+                <th style="width:105px;">班別年級</th>
+                <th style="width:270px;">期中報告 (週次/題目)</th>
+                <th style="width:270px;">期末報告 (週次/題目)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${STUDENTS.map((s, idx) => {
+                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 3;
+                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 3;
+                return `
+                <tr>
+                  <td class="center">${idx + 1}</td>
+                  <td class="center">${s.id}</td>
+                  <td class="center"><b>${s.name}</b></td>
+                  <td class="center">${getCohortInfo(s.id).label}</td>
+                  <td class="${midConflict ? 'red-alert' : ''}">第 ${s.midWeek || '未填'} 週 (${s.midDate})：${getTopic(s.midTopicId).full}</td>
+                  <td class="${finalConflict ? 'red-alert' : ''}">第 ${s.finalWeek || '未填'} 週 (${s.finalDate})：${getTopic(s.finalTopicId).full}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr><th class="section-title" colspan="5">【三、18 項議題佔用摘要】</th></tr>
+              <tr>
+                <th style="width:50px;">編號</th>
+                <th style="width:260px;">議題名稱</th>
+                <th>期中發表</th>
+                <th>期末發表</th>
+                <th style="width:110px;">總人次 / 狀態</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${topicRows.map(r => `
+                <tr>
+                  <td class="center">${r.topic.id}</td>
+                  <td class="${r.statusClass}">${r.topic.full}</td>
+                  <td>${r.midNames}</td>
+                  <td>${r.finalNames}</td>
+                  <td class="center ${r.statusClass}">${r.total}人 · ${r.status}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `教育行政專題研討_議題與週次分配表_${dateStr}.xls`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Excel (.xls) 文件已下載完成！");
+    }
+
+    function exportToWord() {
+      const dateStr = formatExportDate();
+      const scheduleRows = buildScheduleExportRows();
+      const topicRows = buildTopicSummaryRows();
+
+      let wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset="utf-8">
+          <title>教育行政專題研討 18週授課進度與專題發表分配表</title>
+          <!--[if gte mso 9]><xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml><![endif]-->
+          <style>
+            @page {
+              size: A4;
+              margin: 1.8cm 1.5cm 1.8cm 1.5cm;
+            }
+            body {
+              font-family: "Microsoft JhengHei", "微軟正黑體", "標楷體", sans-serif;
+              font-size: 11pt;
+              line-height: 1.55;
+              color: #0f172a;
+            }
+            h1 {
+              font-size: 18pt;
+              text-align: center;
+              color: #1e3a8a;
+              margin: 0 0 6px 0;
+              letter-spacing: 0.02em;
+            }
+            .sub {
+              text-align: center;
+              color: #475569;
+              font-size: 10pt;
+              margin: 0 0 4px 0;
+            }
+            .meta {
+              text-align: center;
+              color: #64748b;
+              font-size: 9.5pt;
+              margin: 0 0 16px 0;
+            }
+            .box {
+              border: 1.5px solid #4338ca;
+              background-color: #f8fafc;
+              padding: 10px 12px;
+              margin-bottom: 18px;
+              font-size: 10pt;
+            }
+            h2 {
+              font-size: 13pt;
+              color: #1e293b;
+              border-bottom: 2px solid #4338ca;
+              padding-bottom: 4px;
+              margin-top: 22px;
+              margin-bottom: 8px;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+              margin-top: 8px;
+              margin-bottom: 18px;
+              font-size: 9.5pt;
+            }
+            th, td {
+              border: 1px solid #64748b;
+              padding: 6px 8px;
+              vertical-align: top;
+            }
+            th {
+              background-color: #312e81;
+              color: #ffffff;
+              font-weight: bold;
+              text-align: center;
+            }
+            .red-alert { background-color: #ffe4e6; color: #9f1239; font-weight: bold; }
+            .green-ok { background-color: #dcfce7; color: #166534; font-weight: bold; }
+            .center { text-align: center; }
+            .sign {
+              margin-top: 28px;
+              font-size: 10pt;
+              color: #334155;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>教育行政專題研討 · 18週授課時程與專題報告分配表</h1>
+          <p class="sub">報告時長不超過 30 分鐘 · 設計 2 題 QA · 紅色：超額需調整 / 綠色：僅 1 人充裕</p>
+          <p class="meta">製表：葉容辰 · 匯出日期：${dateStr}</p>
+
+          <div class="box">
+            <b>【專題發表與研討規範】</b><br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
+            2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
+            3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
+            4. 第 4 週（10/2）外師專題授課，該週不排學生報告。
+          </div>
+
+          <h2>一、18 週次授課進度與專題發表時程表</h2>
+          <table>
+            <thead>
+              <tr>
+                <th width="10%">週次</th>
+                <th width="12%">日期</th>
+                <th width="30%">授課主題 / 行事活動</th>
+                <th width="38%">專題發表名冊與題目</th>
+                <th width="10%">人數</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${scheduleRows.map(({ s, pText, countLabel, countClass }) => `
+                <tr>
+                  <td class="center">第 ${s.week} 週</td>
+                  <td class="center">${s.date}</td>
+                  <td>${s.theme}</td>
+                  <td>${pText}</td>
+                  <td class="center ${countClass}">${countLabel}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <h2>二、全體研究生個人選填名冊</h2>
+          <table>
+            <thead>
+              <tr>
+                <th width="6%">序號</th>
+                <th width="14%">學號</th>
+                <th width="10%">姓名</th>
+                <th width="14%">班別年級</th>
+                <th width="28%">期中報告 (週次/研討題目)</th>
+                <th width="28%">期末報告 (週次/研討題目)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${STUDENTS.map((s, idx) => {
+                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 3;
+                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 3;
+                return `
+                <tr>
+                  <td class="center">${idx + 1}</td>
+                  <td class="center">${s.id}</td>
+                  <td class="center"><b>${s.name}</b></td>
+                  <td class="center">${getCohortInfo(s.id).label}</td>
+                  <td class="${midConflict ? 'red-alert' : ''}">第 ${s.midWeek || '未填'} 週 (${s.midDate})：${getTopic(s.midTopicId).full}</td>
+                  <td class="${finalConflict ? 'red-alert' : ''}">第 ${s.finalWeek || '未填'} 週 (${s.finalDate})：${getTopic(s.finalTopicId).full}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+
+          <h2>三、18 項議題佔用摘要</h2>
+          <table>
+            <thead>
+              <tr>
+                <th width="8%">編號</th>
+                <th width="28%">議題名稱</th>
+                <th width="24%">期中發表</th>
+                <th width="24%">期末發表</th>
+                <th width="16%">總人次 / 狀態</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${topicRows.map(r => `
+                <tr>
+                  <td class="center">${r.topic.id}</td>
+                  <td class="${r.statusClass}">${r.topic.full}</td>
+                  <td>${r.midNames}</td>
+                  <td>${r.finalNames}</td>
+                  <td class="center ${r.statusClass}">${r.total}人 · ${r.status}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="sign">
+            <div>報告規範：每人限 30 分鐘，設計 2 題研討問題進行現場問答</div>
+            <div style="margin-top:14px;">指導教授簽核：____________________　　　　製表：葉容辰</div>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `教育行政專題研討_議題與週次分配表_${dateStr}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Word (.doc) 文件已下載完成！");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-20');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-20');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
