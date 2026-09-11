@@ -163,7 +163,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 w-full flex-grow">
 
     <!-- Rules & Legend -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
         <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">30分</div>
         <div>
@@ -176,20 +176,6 @@
         <div>
           <div class="text-xs text-slate-500 font-medium">現場問答互動</div>
           <div class="text-sm font-bold text-slate-800">須設計 2 題進行 QA</div>
-        </div>
-      </div>
-      <div class="bg-amber-50 rounded-xl p-3.5 border border-amber-200 shadow-sm flex items-center gap-3">
-        <div class="w-9 h-9 shrink-0 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-xs">W4</div>
-        <div>
-          <div class="text-xs text-amber-800 font-bold">10/2 (W4) 外師授課</div>
-          <div class="text-xs font-semibold text-amber-900">該週不排報告，碩一順延平衡</div>
-        </div>
-      </div>
-      <div class="bg-emerald-50 rounded-xl p-3.5 border border-emerald-200 shadow-sm flex items-center gap-3">
-        <div class="w-9 h-9 shrink-0 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">OK</div>
-        <div>
-          <div class="text-xs text-emerald-800 font-bold">全學期負擔平衡</div>
-          <div class="text-xs font-semibold text-emerald-900">每週 2～3 人 · 0 週超額</div>
         </div>
       </div>
     </div>
@@ -211,7 +197,7 @@
             <span class="sm:hidden">統計</span><span class="hidden sm:inline">統計分析</span>
           </button>
         </nav>
-        <p class="mobile-tip text-[11px] text-slate-500 bg-indigo-50 border border-indigo-100 rounded-lg px-3 py-2 no-print">手機請上下滑動查看，不必左右滑。點上方「時程／名冊／議題／統計」切換。</p>
+
 
         <div class="relative w-full sm:w-64 no-print">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
@@ -344,8 +330,12 @@
   </main>
 
   <footer class="no-print border-t border-slate-200 bg-white py-3 text-center text-xs text-slate-500">
-    教育行政專題研討 · 製表：葉容辰 · 純前端單頁應用（無需後端）
+    教育行政專題研討 · 製表：葉容辰
   </footer>
+
+  <button type="button" id="backToTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="no-print fixed bottom-5 right-5 z-40 w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg flex items-center justify-center transition-opacity opacity-0 pointer-events-none" aria-label="回到最上面" title="回到最上面">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
+  </button>
 
   <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" role="status" aria-live="polite">
     <div class="bg-slate-900 text-white text-sm px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2">
@@ -378,25 +368,25 @@
     ];
 
     // Master Course Syllabus (18 Weeks matching user calendar images + Week 4 Guest Lecture)
-    const SYLLABUS = [
-      { week: 1, date: "115/9/11", theme: "兒童福利的意義與範圍", type: "lecture", phase: "期中" },
-      { week: 2, date: "115/9/18", theme: "兒童權利與各國兒童福利的發展", type: "presentation", phase: "期中" },
+        const SYLLABUS = [
+      { week: 1, date: "115/9/11", theme: "課程介紹與導論", type: "lecture", phase: "期中" },
+      { week: 2, date: "115/9/18", theme: "專題議題報告", type: "presentation", phase: "期中" },
       { week: 3, date: "115/9/25", theme: "中秋節放假", type: "holiday", phase: "期中" },
-      { week: 4, date: "115/10/2", theme: "兒童福利政策與法規（外師專題授課）", type: "guest", phase: "期中" },
+      { week: 4, date: "115/10/2", theme: "美國教授授課", type: "guest", phase: "期中" },
       { week: 5, date: "115/10/9", theme: "國慶日補假", type: "holiday", phase: "期中" },
-      { week: 6, date: "115/10/16", theme: "兒童福利專業制度", type: "presentation", phase: "期中" },
-      { week: 7, date: "115/10/23", theme: "兒童虐待及保護性服務", type: "presentation", phase: "期中" },
+      { week: 6, date: "115/10/16", theme: "專題議題報告", type: "presentation", phase: "期中" },
+      { week: 7, date: "115/10/23", theme: "專題議題報告", type: "presentation", phase: "期中" },
       { week: 8, date: "115/10/30", theme: "期中考(繳交期中報告)", type: "exam", phase: "期中" },
-      { week: 9, date: "115/11/6", theme: "支持性兒童福利服務", type: "presentation", phase: "期中" },
-      { week: 10, date: "115/11/13", theme: "補充性兒童福利服務", type: "presentation", phase: "期中/期末" },
-      { week: 11, date: "115/11/20", theme: "替代性兒童福利服務", type: "presentation", phase: "期末" },
-      { week: 12, date: "115/11/27", theme: "特殊需求兒童福利服務", type: "presentation", phase: "期末" },
-      { week: 13, date: "115/12/4", theme: "個別差異-特殊兒童", type: "presentation", phase: "期末" },
-      { week: 14, date: "115/12/11", theme: "原住民兒童福利服務", type: "presentation", phase: "期末" },
-      { week: 15, date: "115/12/18", theme: "兒童福利的展望與願景", type: "presentation", phase: "期末" },
+      { week: 9, date: "115/11/6", theme: "專題議題報告", type: "presentation", phase: "期中" },
+      { week: 10, date: "115/11/13", theme: "專題議題報告", type: "presentation", phase: "期中/期末" },
+      { week: 11, date: "115/11/20", theme: "專題議題報告", type: "presentation", phase: "期末" },
+      { week: 12, date: "115/11/27", theme: "專題議題報告", type: "presentation", phase: "期末" },
+      { week: 13, date: "115/12/4", theme: "專題議題報告", type: "presentation", phase: "期末" },
+      { week: 14, date: "115/12/11", theme: "專題議題報告", type: "presentation", phase: "期末" },
+      { week: 15, date: "115/12/18", theme: "專題議題報告", type: "presentation", phase: "期末" },
       { week: 16, date: "115/12/25", theme: "行憲紀念日放假", type: "holiday", phase: "期末" },
       { week: 17, date: "116/01/01", theme: "元旦放假", type: "holiday", phase: "期末" },
-      { week: 18, date: "116/01/8", theme: "期末考(紙筆測驗)", type: "exam", phase: "期末" }
+      { week: 18, date: "116/01/8", theme: "期末考(紙筆測驗)", type: "exam", phase: "期末" },
     ];
 
     // Master 17 Students Data Structure
@@ -510,6 +500,20 @@
       renderStudentsTable(STUDENTS);
       renderTopicsTable();
       renderAnalytics();
+      const topBtn = document.getElementById('backToTopBtn');
+      if (topBtn) {
+        const syncTopBtn = () => {
+          if (window.scrollY > 240) {
+            topBtn.classList.remove('opacity-0', 'pointer-events-none');
+            topBtn.classList.add('opacity-100');
+          } else {
+            topBtn.classList.add('opacity-0', 'pointer-events-none');
+            topBtn.classList.remove('opacity-100');
+          }
+        };
+        window.addEventListener('scroll', syncTopBtn, { passive: true });
+        syncTopBtn();
+      }
     });
 
     function renderScheduleTable() {
@@ -529,7 +533,7 @@
         if (s.type === 'holiday') {
           typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-holiday">國定放假</span>';
         } else if (s.type === 'guest') {
-          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-special">外師專題授課</span>';
+          typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-special">美國教授授課</span>';
         } else if (s.type === 'exam') {
           typeBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold badge-exam">考試 / 繳交</span>';
         } else if (s.phase === '期中/期末') {
@@ -544,7 +548,7 @@
         if (s.type === 'holiday') {
           presentersHtml = `<span class="text-rose-600 font-medium italic">停課放假，無排定報告</span>`;
         } else if (s.type === 'guest') {
-          presentersHtml = `<span class="text-amber-800 font-semibold">【外師專題講座】全班專心聽講研討，無學生專題發表</span>`;
+          presentersHtml = `<span class="text-amber-800 font-semibold">【美國教授授課】該週不排學生專題發表</span>`;
         } else if (count === 0) {
           if (s.type === 'exam') {
             presentersHtml = `<span class="text-purple-700 font-semibold">【考試 / 書面報告繳交】</span>`;
@@ -917,7 +921,7 @@
         if (s.type === 'holiday') {
           pText = '<span style="color:#b91c1c;">國定放假，無排定報告</span>';
         } else if (s.type === 'guest') {
-          pText = '<span style="color:#92400e;font-weight:bold;">【外師專題講座】無學生專題發表</span>';
+          pText = '<span style="color:#92400e;font-weight:bold;">【美國教授授課】無學生專題發表</span>';
         } else if (count === 0) {
           pText = s.type === 'exam'
             ? '<span style="color:#7e22ce;">考試 / 書面報告繳交</span>'
@@ -999,7 +1003,7 @@
             1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
             2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
-            4. 第 4 週（10/2）外師專題授課，該週不排學生報告。
+            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。
           </div>
 
           <table>
@@ -1194,7 +1198,7 @@
             1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
             2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
-            4. 第 4 週（10/2）外師專題授課，該週不排學生報告。
+            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。
           </div>
 
           <h2>一、18 週次授課進度與專題發表時程表</h2>
