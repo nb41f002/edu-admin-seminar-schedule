@@ -73,6 +73,12 @@
       .no-print {
         display: none !important;
       }
+      #scheduleCards, #studentsCards, #topicsCards, .mobile-tip {
+        display: none !important;
+      }
+      .hidden.md\:block {
+        display: block !important;
+      }
       body {
         background: white !important;
         color: black !important;
@@ -96,6 +102,27 @@
         page-break-inside: avoid;
       }
     }
+
+    /* Mobile: no sideways table scroll for core lists */
+    .mobile-tip {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      .mobile-tip {
+        display: block;
+      }
+      .export-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+      .export-bar .action-btn {
+        justify-content: center;
+        width: 100%;
+        padding-top: 0.65rem;
+        padding-bottom: 0.65rem;
+      }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
@@ -116,7 +143,7 @@
         </div>
       </div>
 
-      <div class="flex items-center flex-wrap gap-2">
+      <div class="export-bar flex items-center flex-wrap gap-2 w-full sm:w-auto">
         <button type="button" onclick="exportToExcel()" class="action-btn inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-colors">
           <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
           匯出 Excel
@@ -170,20 +197,21 @@
     <!-- Tabbed Views -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
       <div class="border-b border-slate-200 px-3 sm:px-5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/90">
-        <nav class="flex items-center gap-1 overflow-x-auto pb-0.5 -mx-1 px-1" aria-label="檢視切換">
-          <button type="button" onclick="switchTab('tab-schedule')" id="btn-tab-schedule" class="tab-btn tab-btn-active shrink-0 px-3.5 py-1.5 text-xs sm:text-sm rounded-lg">
-            18週授課時程
+        <nav class="grid grid-cols-4 gap-1 w-full sm:flex sm:items-center sm:gap-1 sm:w-auto sm:overflow-x-auto" aria-label="檢視切換">
+          <button type="button" onclick="switchTab('tab-schedule')" id="btn-tab-schedule" class="tab-btn tab-btn-active px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm rounded-lg text-center">
+            <span class="sm:hidden">時程</span><span class="hidden sm:inline">18週授課時程</span>
           </button>
-          <button type="button" onclick="switchTab('tab-students')" id="btn-tab-students" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
-            學生名冊 (17人)
+          <button type="button" onclick="switchTab('tab-students')" id="btn-tab-students" class="tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center">
+            <span class="sm:hidden">名冊</span><span class="hidden sm:inline">學生名冊 (17人)</span>
           </button>
-          <button type="button" onclick="switchTab('tab-topics')" id="btn-tab-topics" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
-            18 項議題分配
+          <button type="button" onclick="switchTab('tab-topics')" id="btn-tab-topics" class="tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center">
+            <span class="sm:hidden">議題</span><span class="hidden sm:inline">18 項議題分配</span>
           </button>
-          <button type="button" onclick="switchTab('tab-analysis')" id="btn-tab-analysis" class="tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600">
-            統計分析
+          <button type="button" onclick="switchTab('tab-analysis')" id="btn-tab-analysis" class="tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center">
+            <span class="sm:hidden">統計</span><span class="hidden sm:inline">統計分析</span>
           </button>
         </nav>
+        <p class="mobile-tip text-[11px] text-slate-500 bg-indigo-50 border border-indigo-100 rounded-lg px-3 py-2 no-print">手機請上下滑動查看，不必左右滑。點上方「時程／名冊／議題／統計」切換。</p>
 
         <div class="relative w-full sm:w-64 no-print">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
@@ -207,8 +235,9 @@
           </div>
         </div>
 
-        <div class="overflow-x-auto -mx-1 px-1">
-          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[720px]" id="scheduleTable">
+        <div id="scheduleCards" class="md:hidden space-y-3"></div>
+        <div class="hidden md:block overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse" id="scheduleTable">
             <thead>
               <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
                 <th class="py-2.5 px-3 font-bold text-center w-20">週次</th>
@@ -234,8 +263,13 @@
           </div>
         </div>
 
-        <div class="overflow-x-auto -mx-1 px-1">
-          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[800px]" id="studentsTable">
+        <div class="md:hidden flex gap-2 mb-3 no-print">
+          <button type="button" onclick="sortStudents('name')" class="flex-1 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700">依姓名排序</button>
+          <button type="button" onclick="sortStudents('id')" class="flex-1 py-2 text-sm font-semibold rounded-lg border border-slate-300 bg-white text-slate-700">依學號排序</button>
+        </div>
+        <div id="studentsCards" class="md:hidden space-y-3"></div>
+        <div class="hidden md:block overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse" id="studentsTable">
             <thead>
               <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
                 <th class="py-2.5 px-2 text-center font-bold w-12">序號</th>
@@ -262,8 +296,9 @@
           </div>
         </div>
 
-        <div class="overflow-x-auto -mx-1 px-1">
-          <table class="w-full text-left text-xs sm:text-sm border-collapse min-w-[700px]" id="topicsTable">
+        <div id="topicsCards" class="md:hidden space-y-3"></div>
+        <div class="hidden md:block overflow-x-auto -mx-1 px-1">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse" id="topicsTable">
             <thead>
               <tr class="border-b border-slate-200 bg-slate-100/90 text-slate-700">
                 <th class="py-2.5 px-3 font-bold text-center w-14">編號</th>
@@ -479,7 +514,9 @@
 
     function renderScheduleTable() {
       const tbody = document.getElementById('scheduleTableBody');
+      const cards = document.getElementById('scheduleCards');
       tbody.innerHTML = '';
+      if (cards) cards.innerHTML = '';
 
       SYLLABUS.forEach(s => {
         const tr = document.createElement('tr');
@@ -562,12 +599,34 @@
           <td class="py-3 px-3 text-center">${weekBadgeHtml}</td>
         `;
         tbody.appendChild(tr);
+
+        if (cards) {
+          const card = document.createElement('article');
+          card.className = 'mobile-card rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm';
+          card.dataset.search = (`第${s.week}週 ${s.date} ${s.theme} ` + allPresenters.map(p => p.name).join(' ')).toLowerCase();
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <div class="text-base font-extrabold text-slate-900">第 ${s.week} 週 · ${s.date}</div>
+                <div class="text-sm font-semibold text-slate-700 mt-0.5">${s.theme}</div>
+              </div>
+              <div class="shrink-0 text-right space-y-1">
+                ${typeBadge}
+                <div>${weekBadgeHtml}</div>
+              </div>
+            </div>
+            <div class="text-sm text-slate-700 border-t border-slate-100 pt-2">${presentersHtml}</div>
+          `;
+          cards.appendChild(card);
+        }
       });
     }
 
     function renderStudentsTable(list) {
       const tbody = document.getElementById('studentsTableBody');
+      const cards = document.getElementById('studentsCards');
       tbody.innerHTML = '';
+      if (cards) cards.innerHTML = '';
 
       list.forEach((s, idx) => {
         const midT = getTopic(s.midTopicId);
@@ -636,6 +695,35 @@
           <td class="py-3 px-3 text-center">${statusHtml}</td>
         `;
         tbody.appendChild(tr);
+
+        if (cards) {
+          const card = document.createElement('article');
+          card.className = 'mobile-card rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm';
+          card.dataset.search = `${s.id} ${s.name} ${cohort.label} ${midT.full} ${finalT.full}`.toLowerCase();
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <div>
+                <div class="text-lg font-extrabold text-slate-900 leading-tight">${idx + 1}. ${s.name}</div>
+                <div class="text-xs font-mono text-indigo-700 mt-0.5">${s.id}</div>
+                <div class="mt-1"><span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold border ${cohort.badge}">${cohort.label}</span></div>
+              </div>
+              <div class="shrink-0">${statusHtml}</div>
+            </div>
+            <div class="space-y-2">
+              <div class="rounded-lg bg-sky-50 border border-sky-100 p-2.5">
+                <div class="text-[11px] font-bold text-sky-800 mb-1">期中報告</div>
+                <div class="text-sm font-semibold text-slate-900">${s.midWeek ? `第 ${s.midWeek} 週（${s.midDate}）` : '未填週次'}</div>
+                <div class="text-sm text-slate-700 mt-0.5">${getTopicPrefix(s.midTopicId)}${midT.full}</div>
+              </div>
+              <div class="rounded-lg bg-amber-50 border border-amber-100 p-2.5">
+                <div class="text-[11px] font-bold text-amber-800 mb-1">期末報告</div>
+                <div class="text-sm font-semibold text-slate-900">${s.finalWeek ? `第 ${s.finalWeek} 週（${s.finalDate}）` : '未填週次'}</div>
+                <div class="text-sm text-slate-700 mt-0.5">${getTopicPrefix(s.finalTopicId)}${finalT.full}</div>
+              </div>
+            </div>
+          `;
+          cards.appendChild(card);
+        }
       });
     }
 
@@ -653,7 +741,9 @@
 
     function renderTopicsTable() {
       const tbody = document.getElementById('topicsTableBody');
+      const cards = document.getElementById('topicsCards');
       tbody.innerHTML = '';
+      if (cards) cards.innerHTML = '';
 
       TOPICS.forEach(topic => {
         const midList = STUDENTS.filter(s => s.midTopicId === topic.id);
@@ -698,6 +788,30 @@
           <td class="py-3 px-3 text-center">${statusText}</td>
         `;
         tbody.appendChild(tr);
+
+        if (cards) {
+          const card = document.createElement('article');
+          card.className = 'mobile-card rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm';
+          const people = [...midList, ...finalList].map(x => x.name).join(' ');
+          card.dataset.search = `${topic.id} ${topic.full} ${people}`.toLowerCase();
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div class="text-base font-extrabold text-slate-900 leading-snug">${topic.full}</div>
+              <div class="shrink-0">${statusText}</div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="rounded-lg bg-sky-50 border border-sky-100 p-2.5">
+                <div class="text-[11px] font-bold text-sky-800 mb-1">期中</div>
+                <div class="flex flex-wrap gap-1">${midBadges}</div>
+              </div>
+              <div class="rounded-lg bg-amber-50 border border-amber-100 p-2.5">
+                <div class="text-[11px] font-bold text-amber-800 mb-1">期末</div>
+                <div class="flex flex-wrap gap-1">${finalBadges}</div>
+              </div>
+            </div>
+          `;
+          cards.appendChild(card);
+        }
       });
     }
 
@@ -771,30 +885,27 @@
       tabs.forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
-          btn.className = "tab-btn shrink-0 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600";
+          btn.className = "tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center";
         }
       });
 
       document.getElementById(tabId).classList.remove('hidden');
       const activeBtn = document.getElementById(`btn-${tabId}`);
       if (activeBtn) {
-        activeBtn.className = "tab-btn tab-btn-active shrink-0 px-3.5 py-1.5 text-xs sm:text-sm rounded-lg";
+        activeBtn.className = "tab-btn tab-btn-active px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm rounded-lg text-center";
       }
     }
 
     function filterContent() {
       const q = document.getElementById('searchInput').value.trim().toLowerCase();
 
-      document.querySelectorAll('#scheduleTableBody tr').forEach(tr => {
-        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      document.querySelectorAll('#scheduleTableBody tr, #studentsTableBody tr, #topicsTableBody tr').forEach(tr => {
+        tr.style.display = !q || tr.innerText.toLowerCase().includes(q) ? '' : 'none';
       });
 
-      document.querySelectorAll('#studentsTableBody tr').forEach(tr => {
-        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
-      });
-
-      document.querySelectorAll('#topicsTableBody tr').forEach(tr => {
-        tr.style.display = tr.innerText.toLowerCase().includes(q) ? '' : 'none';
+      document.querySelectorAll('#scheduleCards .mobile-card, #studentsCards .mobile-card, #topicsCards .mobile-card').forEach(card => {
+        const hay = (card.dataset.search || card.innerText || '').toLowerCase();
+        card.style.display = !q || hay.includes(q) ? '' : 'none';
       });
     }
 
