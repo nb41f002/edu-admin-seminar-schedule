@@ -470,10 +470,26 @@
       return "status-badge-normal";
     }
 
+    // Confirmed speaking order; week 2 is the first student presentation on 9/18.
+    const PRESENTATION_ORDER = {
+      2: ['NB41F002', 'MB41F102', 'MB41F204'],
+      9: ['MB41F103', 'MB51F203', 'MB41F205'],
+      13: ['MB51F203', 'MB51F108', 'MB51F206'],
+      15: ['MB41F209', 'MB41F207', 'NB41F008'],
+      18: ['MB41F103', 'MB41F105', 'MB41F205']
+    };
+
     function getPresentersForWeek(weekNum) {
       const midPresenters = STUDENTS.filter(st => st.midWeek === weekNum).map(st => ({ ...st, reportType: '期中' }));
       const finalPresenters = STUDENTS.filter(st => st.finalWeek === weekNum).map(st => ({ ...st, reportType: '期末' }));
-      return [...midPresenters, ...finalPresenters];
+      const presenters = [...midPresenters, ...finalPresenters];
+      const order = PRESENTATION_ORDER[weekNum];
+      if (!order) return presenters;
+      return presenters.sort((a, b) => {
+        const rank = id => order.includes(id) ? order.indexOf(id) : Number.MAX_SAFE_INTEGER;
+        return rank(a.id) - rank(b.id);
+      }).map(p => ({ ...p, presentationOrder: order.includes(p.id) ? order.indexOf(p.id) + 1 : null }));
+
     }
 
     function formatExportDate() {
@@ -559,6 +575,7 @@
           }
         } else {
           presentersHtml = `
+            <div class="text-xs text-slate-500 mb-1">${PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認'}</div>
             <div class="flex flex-wrap gap-2 py-1">
               ${allPresenters.map(p => {
                 const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
@@ -572,7 +589,7 @@
                 return `
                   <div class="inline-flex items-center px-2.5 py-1 rounded-lg border border-slate-200 bg-white shadow-sm">
                     ${phaseTag}
-                    <span class="font-bold text-slate-900 mr-2">${p.name}</span>
+                    <span class="font-bold text-slate-900 mr-2">${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</span>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs ${badgeClass}">
                       ${prefix}${topicObj.full}
                     </span>
@@ -1023,8 +1040,9 @@
         } else {
           pText = presenters.map(p => {
             const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
-            return `<b>${p.name}</b>（${p.reportType}）${getTopic(topicId).full}`;
+            return `<b>${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</b>（${p.reportType}）${getTopic(topicId).full}`;
           }).join('<br>');
+          pText = (PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認') + '<br>' + pText;
         }
         const countLabel = (s.type === 'holiday' || s.type === 'guest') ? '—' : `${count}人`;
         const countClass = (s.type === 'holiday' || s.type === 'guest') ? '' : cellStatusClass(count, 'week');
