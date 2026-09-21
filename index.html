@@ -424,7 +424,7 @@
       { id: "MB31F213", name: "裴芳蓮", midWeek: 8, midDate: "10/30", midTopicId: 7, finalWeek: 14, finalDate: "12/11", finalTopicId: 10 },
 
       // 3. 二年級碩專班 (NB41)
-      { id: "NB41F002", name: "葉容辰", midWeek: 2, midDate: "9/18", midTopicId: 1, finalWeek: 11, finalDate: "11/20", finalTopicId: 16 },
+      { id: "NB41F002", name: "葉容辰", midSlidesUrl: "https://canva.link/uecxgadze53rvnk", midWeek: 2, midDate: "9/18", midTopicId: 1, finalWeek: 11, finalDate: "11/20", finalTopicId: 16 },
       { id: "NB41F008", name: "邱曉葳", midWeek: 8, midDate: "10/30", midTopicId: 2, finalWeek: 15, finalDate: "12/18", finalTopicId: 13 },
 
       // 4. 一年級碩士班 (MB51)
@@ -595,17 +595,19 @@
                 const topicObj = getTopic(topicId);
                 const badgeClass = getTopicBadgeClass(topicId);
                 const prefix = getTopicPrefix(topicId);
+                const slidesUrl = p.reportType === '期中' ? p.midSlidesUrl : p.finalSlidesUrl;
                 const phaseTag = p.reportType === '期中'
                   ? '<span class="text-[10px] px-1 py-0.5 rounded bg-sky-100 text-sky-800 font-bold mr-1">期中</span>'
                   : '<span class="text-[10px] px-1 py-0.5 rounded bg-amber-100 text-amber-800 font-bold mr-1">期末</span>';
 
                 return `
-                  <div class="inline-flex items-center px-2.5 py-1 rounded-lg border border-slate-200 bg-white shadow-sm">
+                  <div class="inline-flex flex-wrap gap-y-1 items-center px-2.5 py-1 rounded-lg border border-slate-200 bg-white shadow-sm">
                     ${phaseTag}
                     <span class="font-bold text-slate-900 mr-2">${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</span>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs ${badgeClass}">
                       ${prefix}${topicObj.full}
                     </span>
+                    ${slidesUrl ? `<a href="${slidesUrl}" target="_blank" rel="noopener noreferrer" aria-label="查看${p.name}的${p.reportType}簡報" class="ml-2 text-xs font-semibold text-indigo-700 underline underline-offset-2">查看簡報 ↗</a>` : ''}
                   </div>
                 `;
               }).join('')}
@@ -1053,7 +1055,8 @@
         } else {
           pText = presenters.map(p => {
             const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
-            return `<b>${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</b>（${p.reportType}）${getTopic(topicId).full}`;
+            const slidesUrl = p.reportType === '期中' ? p.midSlidesUrl : p.finalSlidesUrl;
+            return `<b>${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</b>（${p.reportType}）${getTopic(topicId).full}${slidesUrl ? ` <a href="${slidesUrl}" target="_blank" rel="noopener noreferrer">查看簡報</a>` : ''}`;
           }).join('<br>');
           pText = (PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認') + '<br>' + pText;
         }
