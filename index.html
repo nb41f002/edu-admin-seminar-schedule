@@ -139,7 +139,7 @@
             <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight truncate">教育行政專題研討 · 授課時程與議題分配</h1>
             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">製表：葉容辰</span>
           </div>
-          <p class="text-xs text-slate-500 mt-0.5">報告上限 30 分鐘 · 設計 2 題 QA · 即時協調診斷</p>
+          <p class="text-xs text-slate-500 mt-0.5">報告上限 20 分鐘 · 兩個議題分兩組討論 · 即時協調診斷</p>
         </div>
       </div>
 
@@ -165,20 +165,27 @@
     <!-- Rules & Legend -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
-        <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">30分</div>
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">20分</div>
         <div>
           <div class="text-xs text-slate-500 font-medium">個人發表時長上限</div>
-          <div class="text-sm font-bold text-slate-800">最長不超過 30 分鐘</div>
+          <div class="text-sm font-bold text-slate-800">最長不超過 20 分鐘</div>
         </div>
       </div>
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
-        <div class="w-9 h-9 shrink-0 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-xs">QA</div>
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-xs">討論</div>
         <div>
-          <div class="text-xs text-slate-500 font-medium">現場問答互動</div>
-          <div class="text-sm font-bold text-slate-800">須設計 2 題進行 QA</div>
+          <div class="text-xs text-slate-500 font-medium">分組討論</div>
+          <div class="text-sm font-bold text-slate-800">兩個議題分兩組討論</div>
         </div>
       </div>
     </div>
+
+    <section class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm mb-5" aria-labelledby="submissionHeading">
+      <h2 id="submissionHeading" class="text-sm font-bold text-slate-800 mb-2">報告準備與簡報繳交</h2>
+      <p class="text-sm text-slate-700 mb-2">每次報告請影印紙本簡報，供老師審閱。</p>
+      <p class="text-sm text-slate-700 mb-3">報告前，請將簡報的 Google Drive 或 Canva 連結貼到群組，方便彙整至本網站；請確認老師與同學可以開啟。</p>
+      <div class="flex flex-wrap gap-3 text-sm font-semibold text-indigo-700 underline underline-offset-4"><a href="https://flipclass.stust.edu.tw/course/homework/155087" target="_blank" rel="noopener noreferrer">期中簡報繳交區</a> ／ <a href="https://flipclass.stust.edu.tw/course/homework/155088" target="_blank" rel="noopener noreferrer">期末簡報繳交區</a></div>
+    </section>
 
     <!-- Tabbed Views -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
@@ -199,11 +206,13 @@
         </nav>
 
 
-        <div class="relative w-full sm:w-64 no-print">
+        <div class="w-full sm:w-64 sm:shrink-0 no-print">
+          <div class="relative">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </span>
-          <input type="search" id="searchInput" placeholder="搜尋姓名、學號、週次或議題…" autocomplete="off" enterkeyhint="search" class="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          <input type="search" id="searchInput" aria-label="搜尋姓名、學號、週次或議題" placeholder="搜尋姓名、學號、週次或議題…" autocomplete="off" enterkeyhint="search" class="w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
           <p id="searchHint" class="mt-1 text-[11px] text-slate-500 min-h-[1rem]" aria-live="polite"></p>
         </div>
       </div>
@@ -324,7 +333,7 @@
 
     <div class="hidden print:block mt-8 pt-4 border-t-2 border-slate-400 text-sm">
       <div class="flex justify-between items-center text-slate-700 gap-4">
-        <div>報告規範：每人限 30 分鐘，設計 2 題研討問題進行現場問答 · 製表：葉容辰</div>
+        <div>報告規範：每人限 20 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱 · 製表：葉容辰</div>
         <div>指導教授簽核：____________________</div>
       </div>
     </div>
@@ -1111,15 +1120,18 @@
         </head>
         <body>
           <div class="header-title">教育行政專題研討 · 18週授課時程與專題報告分配表</div>
-          <div class="header-sub">每人發表上限 30 分鐘 · 設計 2 題 QA · 議題超過 2 人／週次超過 3 人須協調</div>
+          <div class="header-sub">每人發表上限 20 分鐘 · 兩個議題分兩組討論 · 議題超過 2 人／週次超過 3 人須協調</div>
           <div class="meta">製表：葉容辰 · 匯出日期：${dateStr}</div>
 
           <div class="rules">
             <b>【專題發表與研討規範】</b><br>
-            1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
-            2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>20 分鐘</b>。<br>
+            2. 研討互動機制：準備 <b>2 個議題</b>，分成 <b>2 組</b> 討論。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
-            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。
+            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。<br>
+            5. 每次報告請影印紙本簡報，供老師審閱。<br>
+            6. 報告前，請將簡報的 Google Drive 或 Canva 連結貼到群組，方便彙整至本網站；請確認老師與同學可以開啟。<br>
+            7. 作業繳交：<a href="https://flipclass.stust.edu.tw/course/homework/155087" target="_blank" rel="noopener noreferrer">期中簡報繳交區</a> ／ <a href="https://flipclass.stust.edu.tw/course/homework/155088" target="_blank" rel="noopener noreferrer">期末簡報繳交區</a>。
           </div>
 
           <table>
@@ -1306,15 +1318,18 @@
         </head>
         <body>
           <h1>教育行政專題研討 · 18週授課時程與專題報告分配表</h1>
-          <p class="sub">報告時長不超過 30 分鐘 · 設計 2 題 QA · 紅色：超額需調整 / 綠色：僅 1 人充裕</p>
+          <p class="sub">報告時長不超過 20 分鐘 · 兩個議題分兩組討論 · 紅色：超額需調整 / 綠色：僅 1 人充裕</p>
           <p class="meta">製表：葉容辰 · 匯出日期：${dateStr}</p>
 
           <div class="box">
             <b>【專題發表與研討規範】</b><br>
-            1. 報告時間限制：每位同學發表時間最長不超過 <b>30 分鐘</b>。<br>
-            2. 研討互動機制：發表者須設計 <b>2 個問題</b> 於現場進行 Q&amp;A 研討。<br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>20 分鐘</b>。<br>
+            2. 研討互動機制：準備 <b>2 個議題</b>，分成 <b>2 組</b> 討論。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
-            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。
+            4. 第 4 週（10/2）美國教授授課，該週不排學生報告。<br>
+            5. 每次報告請影印紙本簡報，供老師審閱。<br>
+            6. 報告前，請將簡報的 Google Drive 或 Canva 連結貼到群組，方便彙整至本網站；請確認老師與同學可以開啟。<br>
+            7. 作業繳交：<a href="https://flipclass.stust.edu.tw/course/homework/155087" target="_blank" rel="noopener noreferrer">期中簡報繳交區</a> ／ <a href="https://flipclass.stust.edu.tw/course/homework/155088" target="_blank" rel="noopener noreferrer">期末簡報繳交區</a>。
           </div>
 
           <h2>一、18 週次授課進度與專題發表時程表</h2>
@@ -1395,7 +1410,7 @@
           </table>
 
           <div class="sign">
-            <div>報告規範：每人限 30 分鐘，設計 2 題研討問題進行現場問答</div>
+            <div>報告規範：每人限 20 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱</div>
             <div style="margin-top:14px;">指導教授簽核：____________________　　　　製表：葉容辰</div>
           </div>
         </body>
