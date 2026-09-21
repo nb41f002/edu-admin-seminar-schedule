@@ -91,7 +91,7 @@
       .tab-content {
         display: block !important;
       }
-      #tab-students, #tab-topics, #tab-analysis {
+      #tab-students, #tab-topics, #tab-analysis, #tab-slides {
         display: block !important;
         page-break-before: always;
       }
@@ -190,7 +190,7 @@
     <!-- Tabbed Views -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
       <div class="border-b border-slate-200 px-3 sm:px-5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/90">
-        <nav class="grid grid-cols-4 gap-1 w-full sm:flex sm:items-center sm:gap-1 sm:w-auto sm:overflow-x-auto" aria-label="檢視切換">
+        <nav class="grid grid-cols-5 gap-1 w-full sm:flex sm:items-center sm:gap-1 sm:w-auto sm:overflow-x-auto" aria-label="檢視切換">
           <button type="button" onclick="switchTab('tab-schedule')" id="btn-tab-schedule" class="tab-btn tab-btn-active px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm rounded-lg text-center">
             <span class="sm:hidden">時程</span><span class="hidden sm:inline">18週授課時程</span>
           </button>
@@ -203,6 +203,7 @@
           <button type="button" onclick="switchTab('tab-analysis')" id="btn-tab-analysis" class="tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center">
             <span class="sm:hidden">統計</span><span class="hidden sm:inline">統計分析</span>
           </button>
+          <button type="button" onclick="switchTab('tab-slides')" id="btn-tab-slides" class="tab-btn px-2 sm:px-3.5 py-2 sm:py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 text-center">簡報專區</button>
         </nav>
 
 
@@ -311,6 +312,11 @@
       </div>
 
       <!-- TAB 4: Analytics -->
+      <div id="tab-slides" class="hidden tab-content p-4 sm:p-6">
+        <h2 class="text-lg font-bold text-slate-900 mb-2">簡報專區</h2>
+        <p class="text-sm text-slate-500 mb-4">依報告日期與已確認順序排列。順序待確認的週次先列出報告同學；簡報連結收到後陸續更新。</p>
+        <div id="slidesList" class="space-y-5"></div>
+      </div>
       <div id="tab-analysis" class="hidden tab-content p-4 sm:p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-2">
           <div class="bg-slate-50/80 rounded-xl border border-slate-200 p-4">
@@ -527,6 +533,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderScheduleTable();
+      renderSlidesLibrary();
       renderStudentsTable(STUDENTS);
       renderTopicsTable();
       renderAnalytics();
@@ -607,7 +614,7 @@
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs ${badgeClass}">
                       ${prefix}${topicObj.full}
                     </span>
-                    ${slidesUrl ? `<a href="${slidesUrl}" target="_blank" rel="noopener noreferrer" aria-label="查看${p.name}的${p.reportType}簡報" class="ml-2 text-xs font-semibold text-indigo-700 underline underline-offset-2">查看簡報 ↗</a>` : ''}
+                    ${slidesUrl ? `<a href="${slidesUrl}" target="_blank" rel="noopener noreferrer" aria-label="查看${p.name}的${p.reportType}簡報" class="ml-2 inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400">查看簡報 ↗</a>` : ''}
                   </div>
                 `;
               }).join('')}
@@ -917,9 +924,36 @@
       });
     }
 
+
+    function renderSlidesLibrary(query = '') {
+      const container = document.getElementById('slidesList');
+      const q = normalizeSearchText(query);
+      let hits = 0;
+      container.innerHTML = SYLLABUS.map(s => {
+        const people = getPresentersForWeek(s.week).filter(p => {
+          const topic = getTopic(p.reportType === '期中' ? p.midTopicId : p.finalTopicId);
+          return !q || normalizeSearchText(s.date + '第' + s.week + '週' + p.name + p.id + topic.full).includes(q);
+        });
+        if (!people.length) return '';
+        hits += people.length;
+        return `<section class="rounded-xl border border-slate-200 overflow-hidden">
+          <h3 class="bg-slate-50 p-3 font-bold text-slate-800">${s.date} · 第${s.week}週 <span class="text-xs font-normal text-slate-500">${PRESENTATION_ORDER[s.week] ? '順序已確認' : '順序待確認'}</span></h3>
+          <div class="divide-y divide-slate-100">${people.map(p => {
+            const url = p.reportType === '期中' ? p.midSlidesUrl : p.finalSlidesUrl;
+            const topic = getTopic(p.reportType === '期中' ? p.midTopicId : p.finalTopicId);
+            return `<div class="p-4 flex flex-wrap items-center justify-between gap-3">
+              <div><div class="font-bold text-slate-900">${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name} <span class="text-xs text-slate-500">${p.reportType}</span></div><p class="text-sm text-slate-600 mt-1">${topic.full}</p></div>
+              ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" aria-label="查看${p.name}的${p.reportType}簡報" class="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400">查看簡報 ↗</a>` : '<span class="text-sm text-slate-500">尚未提供</span>'}
+            </div>`;
+          }).join('')}</div></section>`;
+      }).join('');
+      if (!hits) container.innerHTML = '<p class="text-sm text-slate-500">找不到符合的簡報，請更換搜尋條件。</p>';
+      return hits;
+    }
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      const tabs = ['btn-tab-schedule', 'btn-tab-students', 'btn-tab-topics', 'btn-tab-analysis'];
+      const tabs = ['btn-tab-schedule', 'btn-tab-students', 'btn-tab-topics', 'btn-tab-analysis', 'btn-tab-slides'];
       tabs.forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
@@ -995,6 +1029,11 @@
         topicHits = [...document.querySelectorAll('#topicsTableBody tr')].filter(c => c.style.display !== 'none' && q).length;
       }
 
+      const slidesHits = renderSlidesLibrary(raw);
+      if (!document.getElementById('tab-slides').classList.contains('hidden')) {
+        if (hint) hint.textContent = q ? '找到 ' + slidesHits + ' 筆簡報安排' : '';
+        return;
+      }
       if (!q) {
         if (hint) hint.textContent = '';
         return;
