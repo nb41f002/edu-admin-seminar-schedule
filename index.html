@@ -139,7 +139,7 @@
             <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight truncate">教育行政專題研討 · 授課時程與議題分配</h1>
             <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200">製表：葉容辰</span>
           </div>
-          <p class="text-xs text-slate-500 mt-0.5">報告上限 20 分鐘 · 兩個議題分兩組討論 · 即時協調診斷</p>
+          <p class="text-xs text-slate-500 mt-0.5">報告上限 15 分鐘 · 兩個議題分兩組討論 · 即時協調診斷</p>
         </div>
       </div>
 
@@ -163,13 +163,14 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 w-full flex-grow">
 
     <!-- Rules & Legend -->
+<p class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-sm text-amber-900"><strong>颱風假後報告調整：</strong>10/23停課；10/30由陳文明、11/6由龔勇華、11/13由宋慈恩先報告，再接原排同學。這三週各4人，報告時間改為每人15分鐘。</p>
 <p class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-sm text-amber-900"><strong>排程調整：</strong>葉容辰的期末報告「教育法令」暫改至11/27（第12週），待與老師、同學確認；11/20順序為1.楊碧芳、2.陳祖德；11/27暫排1.周蘭英、2.楊慧珊、3.葉容辰。</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
-        <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">20分</div>
+        <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">15分</div>
         <div>
           <div class="text-xs text-slate-500 font-medium">個人發表時長上限</div>
-          <div class="text-sm font-bold text-slate-800">最長不超過 20 分鐘</div>
+          <div class="text-sm font-bold text-slate-800">最長不超過 15 分鐘</div>
         </div>
       </div>
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
@@ -224,12 +225,12 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-slate-200 gap-2">
           <div>
             <h2 class="text-base font-bold text-slate-900">18 週次授課進度與專題發表排程表</h2>
-            <p class="text-xs text-slate-500 mt-0.5">週次發表人數：超過 3 人顯示紅色；僅 1 人顯示綠色。議題：超過 2 人顯示紅色；僅 1 人顯示綠色。</p>
+            <p class="text-xs text-slate-500 mt-0.5">週次發表人數：超過 4 人顯示紅色；僅 1 人顯示綠色。議題：超過 2 人顯示紅色；僅 1 人顯示綠色。</p>
           </div>
           <div class="flex flex-wrap items-center gap-2 text-xs">
             <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-red">超額需協調</span>
             <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-green">1人充裕</span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-normal">2～3人適中</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded status-badge-normal">2～4人適中</span>
           </div>
         </div>
 
@@ -323,7 +324,7 @@
           <div class="bg-slate-50/80 rounded-xl border border-slate-200 p-4">
             <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
               <span class="w-2 h-2 rounded-full bg-indigo-600 mr-2"></span>
-              各週次發表人數負擔分析（&gt;3 人為紅；1 人為綠）
+              各週次發表人數負擔分析（&gt;4 人為紅；1 人為綠）
             </h3>
             <div id="weeklyLoadChart" class="space-y-2 text-xs"></div>
           </div>
@@ -340,7 +341,7 @@
 
     <div class="hidden print:block mt-8 pt-4 border-t-2 border-slate-400 text-sm">
       <div class="flex justify-between items-center text-slate-700 gap-4">
-        <div>報告規範：每人限 20 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱 · 製表：葉容辰</div>
+        <div>報告規範：每人限 15 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱 · 製表：葉容辰</div>
         <div>指導教授簽核：____________________</div>
       </div>
     </div>
@@ -392,8 +393,8 @@
       { week: 4, date: "115/10/2", theme: "美國教授授課", type: "guest", phase: "期中" },
       { week: 5, date: "115/10/9", theme: "國慶日補假", type: "holiday", phase: "期中" },
       { week: 6, date: "115/10/16", theme: "專題議題報告", type: "presentation", phase: "期中" },
-      { week: 7, date: "115/10/23", theme: "專題議題報告", type: "presentation", phase: "期中" },
-      { week: 8, date: "115/10/30", theme: "期中考(繳交期中報告)", type: "exam", phase: "期中" },
+      { week: 7, date: "115/10/23", theme: "颱風假停課（報告分別移至10/30、11/6、11/13）", type: "holiday", phase: "期中" },
+      { week: 8, date: "115/10/30", theme: "期中考（繳交期中報告）／專題議題報告", type: "exam", phase: "期中" },
       { week: 9, date: "115/11/6", theme: "專題議題報告", type: "presentation", phase: "期中" },
       { week: 10, date: "115/11/13", theme: "專題議題報告", type: "presentation", phase: "期中/期末" },
       { week: 11, date: "115/11/20", theme: "專題議題報告", type: "presentation", phase: "期末" },
@@ -419,13 +420,13 @@
       // 1. 二年級碩士班 (MB41)
       { id: "MB41F102", name: "楊碧芳", midSlidesUrl: "https://canva.link/a3poxotgsujzjtz", midWeek: 2, midDate: "9/18", midTopicId: 3, finalWeek: 11, finalDate: "11/20", finalTopicId: 11 },
       { id: "MB41F103", name: "李佳晏", midWeek: 9, midDate: "11/6", midTopicId: 2, finalWeek: 18, finalDate: "1/8", finalTopicId: 14 },
-      { id: "MB41F105", name: "龔勇華", midWeek: 7, midDate: "10/23", midTopicId: 7, finalWeek: 18, finalDate: "1/8", finalTopicId: 15 },
+      { id: "MB41F105", name: "龔勇華", midWeek: 9, midDate: "11/6", midTopicId: 7, finalWeek: 18, finalDate: "1/8", finalTopicId: 15 },
       { id: "MB41F203", name: "陳奕伶", midSlidesUrl: "https://www.canva.com/design/DAHX2IZGHps/M6Y5QEb3zTtK1ZRGQqAGpQ/edit", midWeek: 6, midDate: "10/16", midTopicId: 4, finalWeek: 14, finalDate: "12/11", finalTopicId: 17 },
       { id: "MB41F204", name: "陳祖德", midSlidesUrl: "https://docs.google.com/presentation/d/14Rmkt8XMufiKQJGzukfUkgcXqcEFKQar/edit?usp=sharing&ouid=101270480860214719712&rtpof=true&sd=true", midWeek: 2, midDate: "9/18", midTopicId: 13, finalWeek: 11, finalDate: "11/20", finalTopicId: 12 },
       { id: "MB41F205", name: "羅聖翰", midWeek: 9, midDate: "11/6", midTopicId: 15, finalWeek: 18, finalDate: "1/8", finalTopicId: 17 },
-      { id: "MB41F206", name: "宋慈恩", midWeek: 7, midDate: "10/23", midTopicId: 8, finalWeek: 14, finalDate: "12/11", finalTopicId: 18 },
+      { id: "MB41F206", name: "宋慈恩", midWeek: 10, midDate: "11/13", midTopicId: 8, finalWeek: 14, finalDate: "12/11", finalTopicId: 18 },
       { id: "MB41F207", name: "郭品辰", midSlidesUrl: "https://canva.link/u2i04r49qgaau5w", midWeek: 6, midDate: "10/16", midTopicId: 11, finalWeek: 15, finalDate: "12/18", finalTopicId: 8 },
-      { id: "MB41F209", name: "陳文明", midWeek: 7, midDate: "10/23", midTopicId: 6, finalWeek: 15, finalDate: "12/18", finalTopicId: 14 },
+      { id: "MB41F209", name: "陳文明", midWeek: 8, midDate: "10/30", midTopicId: 6, finalWeek: 15, finalDate: "12/18", finalTopicId: 14 },
 
       // 2. 三年級碩士班 (MB31)
       { id: "MB31F213", name: "裴芳蓮", midWeek: 8, midDate: "10/30", midTopicId: 7, finalWeek: 14, finalDate: "12/11", finalTopicId: 10 },
@@ -481,7 +482,7 @@
     // Week/Date Color Logic: >3 is Red, ==1 is Green, else Normal
     function getWeekBadgeClass(weekNum) {
       const count = getWeekCount(weekNum);
-      if (count > 3) return "status-badge-red";
+      if (count > 4) return "status-badge-red";
       if (count === 1) return "status-badge-green";
       return "status-badge-normal";
     }
@@ -490,9 +491,9 @@
     const PRESENTATION_ORDER = {
       2: ['NB41F002', 'MB41F102', 'MB41F204'],
       6: ['MB41F207', 'MB41F203'],
-      7: ['MB41F209', 'MB41F105', 'MB41F206'],
-      9: ['MB41F103', 'MB51F203', 'MB41F205'],
-      10: ['MB51F105', 'MB51F108', 'MB51F204'],
+      8: ['MB41F209', 'MB31F213', 'NB41F008', 'MB51F206'],
+      9: ['MB41F105', 'MB41F103', 'MB51F203', 'MB41F205'],
+      10: ['MB41F206', 'MB51F105', 'MB51F108', 'MB51F204'],
       11: ['MB41F102', 'MB41F204'],
       12: ['MB51F105', 'MB51F204', 'NB41F002'],
       13: ['MB51F203', 'MB51F108', 'MB51F206'],
@@ -525,7 +526,7 @@
     function cellStatusClass(count, kind) {
       // kind: 'week' (>3 red, 1 green) or 'topic' (>2 red, 1 green)
       if (kind === 'week') {
-        if (count > 3) return 'red-alert';
+        if (count > 4) return 'red-alert';
         if (count === 1) return 'green-ok';
       } else {
         if (count > 2) return 'red-alert';
@@ -628,7 +629,7 @@
         let weekBadgeHtml = '';
         if (s.type === 'holiday' || s.type === 'guest') {
           weekBadgeHtml = '<span class="text-slate-400 text-xs">—</span>';
-        } else if (count > 3) {
+        } else if (count > 4) {
           weekBadgeHtml = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs status-badge-red">超額 (${count}人)</span>`;
         } else if (count === 1) {
           weekBadgeHtml = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs status-badge-green">充裕 (1人)</span>`;
@@ -640,7 +641,7 @@
 
         tr.innerHTML = `
           <td class="py-3 px-3 text-center font-bold text-slate-800 font-mono">第 ${s.week} 週</td>
-          <td class="py-3 px-3 text-center font-mono font-medium ${count > 3 ? 'text-rose-700 font-bold' : (count === 1 ? 'text-emerald-700 font-bold' : 'text-slate-600')}">${s.date}</td>
+          <td class="py-3 px-3 text-center font-mono font-medium ${count > 4 ? 'text-rose-700 font-bold' : (count === 1 ? 'text-emerald-700 font-bold' : 'text-slate-600')}">${s.date}</td>
           <td class="py-3 px-3 font-semibold text-slate-800">${s.theme}</td>
           <td class="py-3 px-3 text-center">${typeBadge}</td>
           <td class="py-3 px-4">${presentersHtml}</td>
@@ -687,17 +688,17 @@
         const finalWeekCount = s.finalWeek ? getWeekCount(s.finalWeek) : 0;
 
         const midWeekBadge = s.midWeek
-          ? (midWeekCount > 3 ? 'status-badge-red' : (midWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
+          ? (midWeekCount > 4 ? 'status-badge-red' : (midWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
           : 'bg-rose-100 text-rose-800 font-bold';
 
         const finalWeekBadge = s.finalWeek
-          ? (finalWeekCount > 3 ? 'status-badge-red' : (finalWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
+          ? (finalWeekCount > 4 ? 'status-badge-red' : (finalWeekCount === 1 ? 'status-badge-green' : 'status-badge-normal'))
           : 'bg-rose-100 text-rose-800 font-bold';
 
         const cohort = getCohortInfo(s.id);
 
         const isTopicConflict = getTopicCount(s.midTopicId) > 2 || getTopicCount(s.finalTopicId) > 2;
-        const isWeekConflict = midWeekCount > 3 || finalWeekCount > 3;
+        const isWeekConflict = midWeekCount > 4 || finalWeekCount > 4;
         const isMissing = s.midWeek === null || s.finalWeek === null;
 
         let statusHtml = '';
@@ -875,7 +876,7 @@
 
         let barColor = 'bg-slate-400';
         let textColor = 'text-slate-700';
-        if (total > 3) {
+        if (total > 4) {
           barColor = 'bg-rose-500';
           textColor = 'text-rose-700 font-bold';
         } else if (total === 1) {
@@ -890,7 +891,7 @@
           <div class="flex-grow bg-slate-100 rounded-full h-3 overflow-hidden flex border border-slate-200">
             <div class="${barColor} h-full transition-all" style="width: ${pct}%"></div>
           </div>
-          <div class="w-24 text-right font-mono text-xs ${textColor}">${total > 3 ? `${total} 人` : (total === 1 ? `1 人` : `${total} 人`)}</div>
+          <div class="w-24 text-right font-mono text-xs ${textColor}">${total > 4 ? `${total} 人` : (total === 1 ? `1 人` : `${total} 人`)}</div>
         `;
         loadContainer.appendChild(row);
       });
@@ -1165,12 +1166,12 @@
         </head>
         <body>
           <div class="header-title">教育行政專題研討 · 18週授課時程與專題報告分配表</div>
-          <div class="header-sub">每人發表上限 20 分鐘 · 兩個議題分兩組討論 · 議題超過 2 人／週次超過 3 人須協調</div>
+          <div class="header-sub">每人發表上限 15 分鐘 · 兩個議題分兩組討論 · 議題超過 2 人／週次超過 4 人須協調</div>
           <div class="meta">製表：葉容辰 · 匯出日期：${dateStr}</div>
 
           <div class="rules">
             <b>【專題發表與研討規範】</b><br>
-            1. 報告時間限制：每位同學發表時間最長不超過 <b>20 分鐘</b>。<br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>15 分鐘</b>。<br>
             2. 研討互動機制：準備 <b>2 個議題</b>，分成 <b>2 組</b> 討論。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
             4. 第 4 週（10/2）美國教授授課，該週不排學生報告。<br>
@@ -1217,8 +1218,8 @@
             </thead>
             <tbody>
               ${STUDENTS.map((s, idx) => {
-                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 3;
-                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 3;
+                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 4;
+                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 4;
                 return `
                 <tr>
                   <td class="center">${idx + 1}</td>
@@ -1363,12 +1364,12 @@
         </head>
         <body>
           <h1>教育行政專題研討 · 18週授課時程與專題報告分配表</h1>
-          <p class="sub">報告時長不超過 20 分鐘 · 兩個議題分兩組討論 · 紅色：超額需調整 / 綠色：僅 1 人充裕</p>
+          <p class="sub">報告時長不超過 15 分鐘 · 兩個議題分兩組討論 · 紅色：超額需調整 / 綠色：僅 1 人充裕</p>
           <p class="meta">製表：葉容辰 · 匯出日期：${dateStr}</p>
 
           <div class="box">
             <b>【專題發表與研討規範】</b><br>
-            1. 報告時間限制：每位同學發表時間最長不超過 <b>20 分鐘</b>。<br>
+            1. 報告時間限制：每位同學發表時間最長不超過 <b>15 分鐘</b>。<br>
             2. 研討互動機制：準備 <b>2 個議題</b>，分成 <b>2 組</b> 討論。<br>
             3. 時程規劃：第 1～9 週為期中專題報告；第 10～18 週為期末專題報告。<br>
             4. 第 4 週（10/2）美國教授授課，該週不排學生報告。<br>
@@ -1415,8 +1416,8 @@
             </thead>
             <tbody>
               ${STUDENTS.map((s, idx) => {
-                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 3;
-                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 3;
+                const midConflict = getTopicCount(s.midTopicId) > 2 || getWeekCount(s.midWeek) > 4;
+                const finalConflict = getTopicCount(s.finalTopicId) > 2 || getWeekCount(s.finalWeek) > 4;
                 return `
                 <tr>
                   <td class="center">${idx + 1}</td>
@@ -1455,7 +1456,7 @@
           </table>
 
           <div class="sign">
-            <div>報告規範：每人限 20 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱</div>
+            <div>報告規範：每人限 15 分鐘，兩個議題分兩組討論；每次報告攜帶紙本簡報供老師審閱</div>
             <div style="margin-top:14px;">指導教授簽核：____________________　　　　製表：葉容辰</div>
           </div>
         </body>
