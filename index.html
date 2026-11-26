@@ -164,7 +164,7 @@
 
     <!-- Rules & Legend -->
 <p class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-sm text-amber-900"><strong>颱風假後報告調整：</strong>10/23停課；10/30由陳文明、11/6由龔勇華、11/13由宋慈恩先報告，再接原排同學。這三週各4人，報告時間改為每人15分鐘。</p>
-<p class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-sm text-amber-900"><strong>排程調整：</strong>葉容辰的期末報告「教育法令」暫改至11/27（第12週），待與老師、同學確認；11/20順序為1.楊碧芳、2.陳祖德；11/27暫排1.周蘭英、2.楊慧珊、3.葉容辰。</p>
+<p class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-sm text-amber-900"><strong>排程調整：</strong>葉容辰的期末報告「教育法令」改至11/27（第12週）第一梯次；11/20順序為1.楊碧芳、2.陳祖德；11/27順序為1.葉容辰、2.周蘭英、3.楊慧珊。</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
       <div class="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center gap-3">
         <div class="w-9 h-9 shrink-0 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">15分</div>
@@ -414,7 +414,7 @@
     // - Week 9 (11/6): Li Jiayan, Luo Shenghan & Zheng Yiqing (3 presenters)
     // - Week 10 (11/13): First-year trio moves together! (Zhou Lanying, Yao Guanchen, Yang Huishan, 3 presenters)
     // - Week 11 (11/20): Final officially launches (Yeh Jungchen, Chen Tsute, Yang Pifang together, 3 presenters)
-    // - Week 12 (11/27): Zhou Lanying & Yang Huishan (2 presenters)
+    // - Week 12 (11/27): Yeh Jungchen first, followed by Zhou Lanying & Yang Huishan (3 presenters)
     // Result: 0 weeks > 3 presenters, perfect balance!
     const STUDENTS = [
       // 1. 二年級碩士班 (MB41)
@@ -436,10 +436,10 @@
       { id: "NB41F008", name: "邱曉葳", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/chiu-hsiao-wei.pdf", midWeek: 8, midDate: "10/30", midTopicId: 2, finalWeek: 15, finalDate: "12/18", finalTopicId: 13 },
 
       // 4. 一年級碩士班 (MB51)
-      { id: "MB51F105", name: "周蘭英", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/chou-lan-ying.pdf", midWeek: 10, midDate: "11/13", midTopicId: 10, finalWeek: 12, finalDate: "11/27", finalTopicId: 5 },
+      { id: "MB51F105", name: "周蘭英", finalSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/chou-lan-ying-final.pdf", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/chou-lan-ying.pdf", midWeek: 10, midDate: "11/13", midTopicId: 10, finalWeek: 12, finalDate: "11/27", finalTopicId: 5 },
       { id: "MB51F108", name: "姚冠辰", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/yao-kuan-chen.pdf", midWeek: 10, midDate: "11/13", midTopicId: 4, finalWeek: 13, finalDate: "12/4", finalTopicId: 5 },
       { id: "MB51F203", name: "鄭奕清", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/cheng-yi-ching.pdf", midWeek: 9, midDate: "11/6", midTopicId: 9, finalWeek: 13, finalDate: "12/4", finalTopicId: 1 },
-      { id: "MB51F204", name: "楊慧珊", midSlidesUrl: "https://canva.link/c1vphli76uc6ljw", midWeek: 10, midDate: "11/13", midTopicId: 3, finalWeek: 12, finalDate: "11/27", finalTopicId: 6 },
+      { id: "MB51F204", name: "楊慧珊", finalSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/yang-hui-shan-final.pdf", midSlidesUrl: "https://canva.link/c1vphli76uc6ljw", midWeek: 10, midDate: "11/13", midTopicId: 3, finalWeek: 12, finalDate: "11/27", finalTopicId: 6 },
       { id: "MB51F206", name: "陳蕙燕", midSlidesUrl: "https://nb41f002.github.io/edu-admin-seminar-schedule/slides/chen-hui-yen.pdf", midWeek: 8, midDate: "10/30", midTopicId: 9, finalWeek: 13, finalDate: "12/4", finalTopicId: 12 }
     ];
 
@@ -495,7 +495,7 @@
       9: ['MB41F105', 'MB41F103', 'MB51F203', 'MB41F205'],
       10: ['MB41F206', 'MB51F105', 'MB51F108', 'MB51F204'],
       11: ['MB41F102', 'MB41F204'],
-      12: ['MB51F105', 'MB51F204', 'NB41F002'],
+      12: ['NB41F002', 'MB51F105', 'MB51F204'],
       13: ['MB51F203', 'MB51F108', 'MB51F206'],
       14: ['MB41F206', 'MB41F203', 'MB31F213'],
       15: ['MB41F209', 'MB41F207', 'NB41F008'],
@@ -599,7 +599,7 @@
           }
         } else {
           presentersHtml = `
-            <div class="text-xs text-slate-500 mb-1">${s.week === 12 ? '暫定順序，待與老師、同學確認' : (PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認')}</div>
+            <div class="text-xs text-slate-500 mb-1">${PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認'}</div>
             <div class="flex flex-col items-start gap-2 py-1">
               ${allPresenters.map(p => {
                 const topicId = p.reportType === '期中' ? p.midTopicId : p.finalTopicId;
@@ -941,7 +941,7 @@
         if (!people.length) return '';
         hits += people.length;
         return `<section class="rounded-xl border border-slate-200 overflow-hidden">
-          <h3 class="bg-slate-50 p-3 font-bold text-slate-800">${s.date} · 第${s.week}週 <span class="text-xs font-normal text-slate-500">${s.week === 12 ? '暫定順序，待與老師、同學確認' : (PRESENTATION_ORDER[s.week] ? '順序已確認' : '順序待確認')}</span></h3>
+          <h3 class="bg-slate-50 p-3 font-bold text-slate-800">${s.date} · 第${s.week}週 <span class="text-xs font-normal text-slate-500">${PRESENTATION_ORDER[s.week] ? '順序已確認' : '順序待確認'}</span></h3>
           <div class="divide-y divide-slate-100">${people.map(p => {
             const url = p.reportType === '期中' ? p.midSlidesUrl : p.finalSlidesUrl;
             const topic = getTopic(p.reportType === '期中' ? p.midTopicId : p.finalTopicId);
@@ -1101,7 +1101,7 @@
             const slidesUrl = p.reportType === '期中' ? p.midSlidesUrl : p.finalSlidesUrl;
             return `<b>${p.presentationOrder ? p.presentationOrder + '. ' : ''}${p.name}</b>（${p.reportType}）${getTopic(topicId).full}${slidesUrl ? ` <a href="${slidesUrl}" target="_blank" rel="noopener noreferrer">查看簡報</a>` : ''}`;
           }).join('<br>');
-          pText = (s.week === 12 ? '暫定順序，待與老師、同學確認' : (PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認')) + '<br>' + pText;
+          pText = (PRESENTATION_ORDER[s.week] ? '報告順序已確認' : '報告順序待確認') + '<br>' + pText;
         }
         const countLabel = (s.type === 'holiday' || s.type === 'guest') ? '—' : `${count}人`;
         const countClass = (s.type === 'holiday' || s.type === 'guest') ? '' : cellStatusClass(count, 'week');
